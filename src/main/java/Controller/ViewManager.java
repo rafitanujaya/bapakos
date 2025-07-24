@@ -61,14 +61,12 @@ public class ViewManager {
      * Menampilkan view register dengan mengganti konten scene yang ada.
      */
     public void showRegisterView() {
-        // 1. Buat instance view untuk register
         RegisterView registerView = new RegisterView();
-        // Jika ada controller, buat di sini: new RegisterController(registerView, this);
 
-        // 2. Ambil layout dari view
+        // PASTIKAN BARIS INI ADA DAN AKTIF
+        new RegisterController(registerView, this);
+
         Parent registerRoot = registerView.getView();
-
-        // 3. Ganti konten scene dan update judul
         mainScene.setRoot(registerRoot);
         primaryStage.setTitle("Register");
     }

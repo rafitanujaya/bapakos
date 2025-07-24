@@ -92,6 +92,12 @@ Label {
     -fx-font-weight: bold;
 }
 
+.error-field {
+    -fx-border-color: #D32F2F; /* Warna border merah */
+    -fx-border-width: 2px;
+    -fx-border-radius: 4px;
+}
+
 .role-radio .text {
     -fx-font-weight: bold; /* Membuat teks di dalam radio button menjadi tebal */
     -fx-font-size: 16px;
