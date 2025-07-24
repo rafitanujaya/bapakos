@@ -26,7 +26,7 @@ Aplikasi desktop berbasis JavaFX untuk mengelola kost, melakukan booking, serta 
 ├── model/          → Kelas data seperti User, Kost, Booking
 ├── service/        → Logika bisnis & validasi
 ├── controller/     → Controller JavaFX untuk menangani UI
-├── view/           → Helper tampilan (opsional)
+├── View/           → Helper tampilan (opsional)
 └── Main.java       → Titik masuk aplikasi
 
 /resources/
@@ -36,7 +36,10 @@ Aplikasi desktop berbasis JavaFX untuk mengelola kost, melakukan booking, serta 
 ├── db/             → Skema SQL / mock DB
 └── config.properties (opsional)
 ```
-
+#
+```angular2html 
+frame 1220px 720px
+```
 ---
 
 ## 🧩 Konvensi Penamaan

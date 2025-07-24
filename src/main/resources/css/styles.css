@@ -1,0 +1,113 @@
+/* File: styles.css - Tema Cerah & Teks Tebal */
+
+.root {
+    -fx-background-color: #f6f8fa;
+    -fx-padding: 20px;
+}
+
+.logo-placeholder {
+    -fx-min-height: 50px;
+    -fx-min-width: 50px;
+    -fx-background-color: #e1e4e8;
+    -fx-background-radius: 50%;
+}
+
+.title-label {
+    -fx-font-size: 24px;
+    -fx-text-fill: #24292f;
+    -fx-font-weight: bold; /* <-- Diubah menjadi bold */
+}
+
+.form-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d7de;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 20px;
+    -fx-alignment: top-left;
+}
+
+.input-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #24292f;
+    -fx-font-weight: bold; /* <-- Diubah menjadi bold */
+}
+
+.text-field, .password-field {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #24292f;
+    -fx-border-color: #d0d7de;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-font-size: 14px;
+    -fx-padding: 8px;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #0969da;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(three-pass-box, rgba(9, 105, 218, 0.3), 5, 0, 0, 0);
+}
+
+.sign-in-button {
+    -fx-background-color: #2da44e;
+    -fx-text-fill: white;
+    -fx-font-weight: bold; /* <-- Sudah bold */
+    -fx-background-radius: 6px;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+}
+
+.sign-in-button:hover {
+    -fx-background-color: #2c974b;
+}
+
+.register-button {
+    -fx-background-color: #0969da;
+    -fx-text-fill: white;
+    -fx-font-weight: bold; /* <-- Sudah bold */
+    -fx-background-radius: 6px;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+}
+
+.register-button:hover {
+    -fx-background-color: #f3f4f6;
+    -fx-border-color: rgba(36, 41, 47, 0.25);
+}
+
+/* Styling untuk label "or" dan label umum lainnya */
+Label {
+    -fx-text-fill: #57606a;
+    -fx-font-weight: bold; /* <-- Diubah menjadi bold */
+}
+.error-label {
+    -fx-text-fill: #D32F2F; /* Warna merah tua yang tidak terlalu terang */
+    -fx-font-weight: bold;
+}
+
+.role-radio .text {
+    -fx-font-weight: bold; /* Membuat teks di dalam radio button menjadi tebal */
+    -fx-font-size: 16px;
+    -fx-fill: #24292e; /* Warna teks */
+}
+
+/* Gaya untuk lingkaran radio button itu sendiri (opsional) */
+.role-radio .radio {
+    -fx-border-width: 2px;
+    -fx-border-color: #0078D7;
+    -fx-background-color: white;
+    -fx-border-radius: 15px;
+    -fx-padding: 3px;
+}
+
+/* Gaya saat radio button dipilih */
+.role-radio:selected .radio .dot {
+    -fx-background-color: #0078D7;
+}
