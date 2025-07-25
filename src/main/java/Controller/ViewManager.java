@@ -1,8 +1,8 @@
 package Controller; // Atau package yang sesuai
 
-import View.HomepageView;
 import View.LoginView;
 import View.RegisterView;
+import View.AdminDashboardView;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -41,21 +41,6 @@ public class ViewManager {
         primaryStage.show();
     }
 
-    /**
-     * Menampilkan view homepage dengan mengganti konten scene yang ada.
-     */
-    public void showHomepageView() {
-        // 1. Buat instance view untuk homepage
-        HomepageView homepageView = new HomepageView();
-        // Jika ada controller, buat di sini: new HomepageController(homepageView, this);
-
-        // 2. Ambil layout dari view
-        Parent homepageRoot = homepageView.getView();
-
-        // 3. Ganti konten scene dan update judul
-        mainScene.setRoot(homepageRoot);
-        primaryStage.setTitle("Homepage");
-    }
 
     /**
      * Menampilkan view register dengan mengganti konten scene yang ada.
@@ -70,4 +55,20 @@ public class ViewManager {
         mainScene.setRoot(registerRoot);
         primaryStage.setTitle("Register");
     }
+
+    public void showAdminDashboard() {
+        AdminDashboardView adminView = new AdminDashboardView();
+        new AdminDashboardController(adminView, this);
+        Parent adminRoot = adminView.getView();
+        mainScene.setRoot(adminRoot);
+        primaryStage.setTitle("Dashboard Pemilik Kos");
+    }
+
+//    public void showUserDashboard() {
+//        UserDashboardView userView = new UserDashboardView();
+//        // new UserDashboardController(userView, this); // Jika perlu controller
+//        Parent userRoot = userView.getView();
+//        mainScene.setRoot(userRoot);
+//        primaryStage.setTitle("Dashboard Penyewa Kos");
+//    }
 }
