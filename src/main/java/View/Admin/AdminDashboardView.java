@@ -1,5 +1,7 @@
 package View.Admin;
 
+import Model.BookingDummy;
+import Model.TransaksiDummy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -16,12 +18,12 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import Model.Booking;
-import Model.Transaksi;
 import Service.DataService;
 import javafx.scene.layout.StackPane;
 
 public class AdminDashboardView {
+
+// Di dalam kelas AdminDashboardView
 
     public Parent getView() {
         VBox mainContent = new VBox(20);
@@ -29,15 +31,32 @@ public class AdminDashboardView {
 
         DataService dataService = new DataService();
 
-        // Kartu Statistik Tunggal
+        // Kartu Statistik Tunggal (tidak berubah)
         HBox singleStatCard = createStatsCardBox();
 
-        // Layout 70-30 untuk Body
+        // HBox ini sekarang akan menjadi satu kartu besar
         HBox bodyContent = new HBox(20);
+        bodyContent.getStyleClass().add("content-card");
+        bodyContent.setPadding(new Insets(20));
+
+        // Panel kiri (Transaksi)
         Node transaksiPanel = createTransaksiPanel(dataService);
-        Node bookingPanel = createBookingPanel(dataService);
-        HBox.setHgrow(transaksiPanel, Priority.ALWAYS); // Panel kiri meregang
-        bodyContent.getChildren().addAll(transaksiPanel, bookingPanel);
+
+        // Panel kanan (Booking & Aksi Cepat)
+        Node rightSidebar = createRightSidebar(dataService);
+
+        // --- PERBAIKAN DI SINI ---
+
+        // 1. Beri panel kanan lebar minimum agar tidak terlalu terhimpit
+        rightSidebar.setStyle("-fx-min-width: 280px;");
+
+        // 2. Perintahkan panel transaksi untuk mengambil semua sisa ruang
+        HBox.setHgrow(transaksiPanel, Priority.ALWAYS);
+
+        // -------------------------
+
+        // Masukkan kedua panel ke dalam HBox
+        bodyContent.getChildren().addAll(transaksiPanel, rightSidebar);
 
         // Gabungkan semua
         mainContent.getChildren().addAll(singleStatCard, bodyContent);
@@ -52,7 +71,7 @@ public class AdminDashboardView {
 
         VBox revenueBlock = createStatBlock("Total Revenue", "Rp9.000.000,00", "+7.5% dari bulan lalu", "/img/balance-icon.png");
         VBox kosBlock = createStatBlock("Jumlah Kos Dimiliki", "12", "+2 kos baru", "/img/property-icon.png");
-        VBox transaksiBlock = createStatBlock("Jumlah Transaksi", "89", "5 transaksi berhasil", "/img/transaction-success-icon.png");
+        VBox transaksiBlock = createStatBlock("Jumlah TransaksiDummy", "89", "5 transaksi berhasil", "/img/transaction-success-icon.png");
 
         HBox.setHgrow(revenueBlock, Priority.ALWAYS);
         HBox.setHgrow(kosBlock, Priority.ALWAYS);
@@ -95,15 +114,15 @@ public class AdminDashboardView {
         rowsContainer.getChildren().add(createTransaksiHeader());
 
         // Ambil data dan buat satu HBox untuk setiap baris
-        ObservableList<Transaksi> transactions = dataService.getRecentTransactions();
-        for (Transaksi trx : transactions) {
+        ObservableList<TransaksiDummy> transactions = dataService.getRecentTransactions();
+        for (TransaksiDummy trx : transactions) {
             rowsContainer.getChildren().add(createTransaksiRow(trx));
         }
 
         // Bungkus VBox dengan ScrollPane
         ScrollPane scrollPane = new ScrollPane(rowsContainer);
         scrollPane.setFitToWidth(true); // Penting agar konten memenuhi lebar
-        scrollPane.getStyleClass().add("no-border-scroll-pane");
+        scrollPane.getStyleClass().add("table-scroll-pane");
 
         // Atur agar ScrollPane meregang secara vertikal
         VBox.setVgrow(scrollPane, Priority.ALWAYS);
@@ -113,37 +132,37 @@ public class AdminDashboardView {
     }
 
     /**
-     * Membuat satu baris HBox untuk menampilkan data transaksi.
+     * Membuat satu baris HBox untuk menampilkan data transaksiDummy.
      */
-    private Node createTransaksiRow(Transaksi transaksi) {
+    private Node createTransaksiRow(TransaksiDummy transaksiDummy) {
         HBox row = new HBox(10);
         row.setPadding(new Insets(15));
         row.setAlignment(Pos.CENTER_LEFT);
         row.getStyleClass().add("transaction-row");
 
         // Kolom Nama (Gambar + Teks)
-        ImageView imageView = new ImageView(new Image(transaksi.getImagePath()));
+        ImageView imageView = new ImageView(new Image(transaksiDummy.getImagePath()));
         imageView.setFitHeight(30);
         imageView.setFitWidth(30);
         imageView.getStyleClass().add("table-image");
-        Label namaLabel = new Label(transaksi.getNama());
+        Label namaLabel = new Label(transaksiDummy.getNama());
         HBox namaBox = new HBox(10, imageView, namaLabel);
         namaBox.setAlignment(Pos.CENTER_LEFT);
 
         // Kolom-kolom lain sebagai Label atau StackPane
-        Label unitLabel = new Label(transaksi.getKamar());
+        Label unitLabel = new Label(transaksiDummy.getKamar());
         unitLabel.setAlignment(Pos.CENTER);
-        Label tanggalLabel = new Label(transaksi.getTanggal());
+        Label tanggalLabel = new Label(transaksiDummy.getTanggal());
         tanggalLabel.setAlignment(Pos.CENTER);
-        Label jumlahLabel = new Label(transaksi.getJumlah());
+        Label jumlahLabel = new Label(transaksiDummy.getJumlah());
         jumlahLabel.setAlignment(Pos.CENTER);
 
         HBox spacer = new HBox();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        Label statusLabel = new Label(transaksi.getStatus());
+        Label statusLabel = new Label(transaksiDummy.getStatus());
         statusLabel.getStyleClass().add("status-label");
-        statusLabel.getStyleClass().add("status-" + transaksi.getStatus().toLowerCase().replace(" ", "-"));
+        statusLabel.getStyleClass().add("status-" + transaksiDummy.getStatus().toLowerCase().replace(" ", "-"));
         StackPane statusContainer = new StackPane(statusLabel);
         statusContainer.setAlignment(Pos.CENTER);
 
@@ -177,8 +196,12 @@ public class AdminDashboardView {
         namaPane.setAlignment(Pos.CENTER);
 
         // --- Kolom Unit ---
-        // (Karena tidak ada ikon, kita hanya pakai Label)
-        StackPane unitPane = new StackPane(new Label("Unit"));
+        ImageView unitIcon = new ImageView(new Image("/img/property-icon.png"));
+        unitIcon.setFitHeight(16);
+        unitIcon.setFitWidth(16);
+        HBox unitContent = new HBox(5, unitIcon, new Label("Unit"));
+        unitContent.setAlignment(Pos.CENTER);
+        StackPane unitPane = new StackPane(unitContent);
         unitPane.setAlignment(Pos.CENTER);
 
         // --- Kolom Date ---
@@ -222,34 +245,66 @@ public class AdminDashboardView {
         return header;
     }
 
-    private Node createBookingPanel(DataService dataService) {
-        VBox panel = new VBox(15);
-        Label title = new Label("Booking Perlu Persetujuan");
-        title.getStyleClass().add("panel-title");
+    private Node createRightSidebar(DataService dataService) {
+        // VBox utama untuk menampung kedua panel di sisi kanan
+        VBox rightSidebarContent = new VBox(20); // Jarak antar panel booking dan aksi cepat
+
+        // --- Panel Booking (kode lama) ---
+        VBox bookingPanel = new VBox(15);
+        Label bookingTitle = new Label("Booking Perlu Persetujuan");
+        bookingTitle.getStyleClass().add("panel-title");
 
         VBox bookingCardsContainer = new VBox(10);
-        ObservableList<Booking> bookings = dataService.getPendingBookings();
-        for (Booking booking : bookings) {
+        ObservableList<BookingDummy> bookings = dataService.getPendingBookings();
+        for (BookingDummy booking : bookings) {
             bookingCardsContainer.getChildren().add(createBookingCard(booking));
         }
 
-        ScrollPane scrollPane = new ScrollPane(bookingCardsContainer);
-        scrollPane.setFitToWidth(true);
-        scrollPane.getStyleClass().add("no-border-scroll-pane");
+        ScrollPane bookingScrollPane = new ScrollPane(bookingCardsContainer);
+        bookingScrollPane.setFitToWidth(true);
+        bookingScrollPane.getStyleClass().add("no-border-scroll-pane");
 
-        panel.getChildren().addAll(title, scrollPane);
+        bookingPanel.getChildren().addAll(bookingTitle, bookingScrollPane);
+
+        // --- Panel Aksi Cepat (BARU) ---
+        Node quickActionsPanel = createQuickActionsPanel();
+
+        // Masukkan kedua panel ke dalam VBox utama sisi kanan
+        rightSidebarContent.getChildren().addAll(bookingPanel, quickActionsPanel);
+
+        return rightSidebarContent;
+    }
+
+    /**
+     * Membuat panel baru untuk tombol-tombol Aksi Cepat.
+     */
+    private Node createQuickActionsPanel() {
+        VBox panel = new VBox(15);
+        Label title = new Label("Aksi Cepat");
+        title.getStyleClass().add("panel-title");
+
+        // Buat tombol-tombol aksi
+        Button tambahKosBtn = new Button("Tambah Properti Baru");
+        tambahKosBtn.setMaxWidth(Double.MAX_VALUE); // Tombol selebar panel
+        tambahKosBtn.getStyleClass().add("quick-action-button");
+
+        Button kirimPengingatBtn = new Button("Kirim Pengingat Tagihan");
+        kirimPengingatBtn.setMaxWidth(Double.MAX_VALUE);
+        kirimPengingatBtn.getStyleClass().add("quick-action-button");
+
+        panel.getChildren().addAll(title, tambahKosBtn, kirimPengingatBtn);
         return panel;
     }
 
-    private Node createBookingCard(Booking booking) {
+    private Node createBookingCard(BookingDummy bookingDummy) {
         HBox card = new HBox(10);
-        card.getStyleClass().add("booking-card");
+        card.getStyleClass().add("bookingDummy-card");
         card.setPadding(new Insets(10));
 
         VBox info = new VBox(2);
-        Label nama = new Label(booking.getNama());
+        Label nama = new Label(bookingDummy.getNama());
         nama.setStyle("-fx-font-weight: bold;");
-        Label kamar = new Label(booking.getKamar());
+        Label kamar = new Label(bookingDummy.getKamar());
         info.getChildren().addAll(nama, kamar);
 
         HBox spacer = new HBox();

@@ -3,7 +3,7 @@ package Model;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Transaksi {
+public class TransaksiDummy {
     private final StringProperty nama;
     private final StringProperty kamar;
     private final StringProperty tanggal;
@@ -11,7 +11,7 @@ public class Transaksi {
     private final StringProperty status;
     private final StringProperty imagePath;
 
-    public Transaksi(String imagePath, String nama, String kamar, String tanggal, String jumlah, String status) {
+    public TransaksiDummy(String imagePath, String nama, String kamar, String tanggal, String jumlah, String status) {
         this.imagePath = new SimpleStringProperty(imagePath);
         this.nama = new SimpleStringProperty(nama);
         this.kamar = new SimpleStringProperty(kamar);

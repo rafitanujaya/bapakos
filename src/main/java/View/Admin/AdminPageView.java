@@ -47,7 +47,7 @@ public class AdminPageView {
 
         // Menu Utama (Aktif)
         dashboardBtn = createMenuButton("Dashboard", "/img/home-icon.png");
-        transactionBtn = createMenuButton("Transaksi", "/img/transaction-icon.png");
+        transactionBtn = createMenuButton("TransaksiDummy", "/img/transaction-icon.png");
         orderBtn = createMenuButton("Order", "/img/order-icon.png");
 
         // Menu Aksi CRUD (Nonaktif)

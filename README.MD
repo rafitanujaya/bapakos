@@ -1,6 +1,6 @@
 # 🏠 Aplikasi Manajemen Kost - JavaFX
 
-Aplikasi desktop berbasis JavaFX untuk mengelola kost, melakukan booking, serta mengatur pengguna dan penyewa. Proyek ini menerapkan standar profesional seperti arsitektur MVC, pola DAO, dan pengembangan modular untuk memastikan skalabilitas dan kemudahan pemeliharaan.
+Aplikasi desktop berbasis JavaFX untuk mengelola kost, melakukan bookingDummy, serta mengatur pengguna dan penyewa. Proyek ini menerapkan standar profesional seperti arsitektur MVC, pola DAO, dan pengembangan modular untuk memastikan skalabilitas dan kemudahan pemeliharaan.
 
 ---
 
@@ -11,7 +11,7 @@ Aplikasi desktop berbasis JavaFX untuk mengelola kost, melakukan booking, serta 
 - Pencarian Kost (oleh Pengguna)
 - Alur Booking Kost → Persetujuan → Pembayaran
 - Tampilan berdasarkan peran pengguna
-- Pelacakan status booking & pembayaran
+- Pelacakan status bookingDummy & pembayaran
 
 ---
 
@@ -70,7 +70,7 @@ frame 1220px 720px
 
 #### Contoh:
 - feat(auth): tambahkan logika login dengan hashing password
-- fix(booking): perbaiki konflik booking ganda
+- fix(bookingDummy): perbaiki konflik bookingDummy ganda
 - docs(readme): update petunjuk penggunaan proyek
 
 ---
@@ -94,8 +94,8 @@ git clone https://github.com/username/kost-management-app-javafx.git
 
 ## 💡 Panduan Pengembangan
 
-- DAO: Fokus pada query dan transaksi database
-- Service: Menangani logika booking, validasi, dan proses bisnis
+- DAO: Fokus pada query dan transaksiDummy database
+- Service: Menangani logika bookingDummy, validasi, dan proses bisnis
 - Controller: Menangani interaksi UI (onClick, navigasi, dsb)
 - FXML: Hanya untuk desain UI, hindari logika berat di sini
 - Gunakan `DBConfig.java` untuk koneksi database terpusat

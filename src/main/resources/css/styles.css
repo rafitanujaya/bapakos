@@ -397,7 +397,7 @@
 }
 
 /* * .panel-title
- * Judul untuk setiap panel konten di dalam dashboard (misal: "Transaksi Terbaru").
+ * Judul untuk setiap panel konten di dalam dashboard (misal: "TransaksiDummy Terbaru").
  */
 .panel-title {
     -fx-font-size: 18px;
@@ -453,7 +453,20 @@
     -fx-background-color: transparent;
 }
 
-/* --- Gaya untuk Tabel Transaksi --- */
+/* Gaya untuk ScrollPane yang membungkus tabel */
+.table-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: #E9ECEF; /* Warna border abu-abu terang */
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px; /* Sudut sedikit melengkung */
+}
+
+/* Pastikan viewport di dalamnya juga transparan */
+.table-scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* --- Gaya untuk Tabel TransaksiDummy --- */
 
 /* Gaya untuk header kustom */
 .transaction-header {
@@ -523,4 +536,52 @@
 .scroll-pane > .scroll-bar:vertical .thumb {
     -fx-background-color: #CED4DA; /* Warna abu-abu terang untuk thumb */
     -fx-background-radius: 4; /* Membuat sudutnya sedikit melengkung */
+}
+
+/* Style BARU untuk kartu besar yang menggabungkan transaksi dan booking */
+.content-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12px;
+    -fx-border-color: #E9ECEF;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+}
+
+/* MODIFIKASI style tabel agar transparan dan tidak punya border sendiri */
+.transaction-table {
+    -fx-background-color: transparent; /* Hapus latar belakang putihnya */
+    -fx-border-color: transparent; /* Hapus bordernya */
+    -fx-background-radius: 0px;
+    -fx-border-radius: 0px;
+}
+
+/* Gaya header tetap diperlukan agar terlihat rapi */
+.transaction-table .column-header {
+    -fx-background-color: #F8F9FA;
+    -fx-font-weight: bold;
+    -fx-padding: 12px;
+}
+
+/* Garis bawah antar baris tetap ada */
+.transaction-table .table-cell {
+    -fx-padding: 14px 12px;
+    -fx-border-color: transparent transparent #F1F3F5 transparent;
+}
+
+/* Gaya untuk tombol di panel Aksi Cepat */
+.quick-action-button {
+    -fx-background-color: #F8F9FA;
+    -fx-text-fill: #495057;
+    -fx-font-weight: bold;
+    -fx-border-color: #DEE2E6;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 12px;
+    -fx-alignment: center-left;
+    -fx-cursor: hand;
+}
+.quick-action-button:hover {
+    -fx-background-color: #F1F3F5;
+    -fx-border-color: #ADB5BD;
 }

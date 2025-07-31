@@ -1,6 +1,6 @@
-package Controller.Admin;
+package View.Controller;
 
-import Controller.ViewManager;
+import View.ViewManager;
 import View.Admin.AdminPageView;
 import View.Admin.OrderMenuView; // Ganti/buat view yang sesuai
 import View.Admin.AdminDashboardView;

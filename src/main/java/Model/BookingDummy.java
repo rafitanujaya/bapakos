@@ -1,11 +1,11 @@
 package Model;
 
-public class Booking {
+public class BookingDummy {
     private String nama;
     private String kamar;
     // Tambahkan properti lain jika perlu
 
-    public Booking(String nama, String kamar) {
+    public BookingDummy(String nama, String kamar) {
         this.nama = nama;
         this.kamar = kamar;
     }

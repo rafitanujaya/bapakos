@@ -1,6 +1,6 @@
-package Controller.Register;
+package View.Controller;
 
-import Controller.ViewManager;
+import View.ViewManager;
 import View.Register.RegisterView;
 import javafx.beans.binding.BooleanBinding;
 

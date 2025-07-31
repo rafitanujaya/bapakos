@@ -1,6 +1,6 @@
-package Controller.Login;
+package View.Controller;
 
-import Controller.ViewManager;
+import View.ViewManager;
 import View.Login.LoginView;
 import javafx.beans.binding.Bindings;
 import javafx.scene.control.RadioButton;
@@ -10,7 +10,7 @@ public class LoginController {
     public LoginController(LoginView view, ViewManager viewManager) {
         // Sembunyikan label error pada awalnya
         view.getErrorLabel().setVisible(false);
-
+        System.out.println("Tombol Login Ditekan!");
         // Menonaktifkan tombol login jika field kosong (logika ini tetap berguna)
         view.getLoginBtn().disableProperty().bind(
                 Bindings.createBooleanBinding(() ->
