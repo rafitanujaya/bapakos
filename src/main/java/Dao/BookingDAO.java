@@ -34,7 +34,7 @@ public class BookingDAO {
         }
     }
 
-    public List<BookingModel> getByOwnerIdAndKostId(String ownerId, String kostId) throws SQLException {
-        String query = "SELECT * FROM bookings WHERE owner = ?";
-    }
+//    public List<BookingModel> getByOwnerIdAndKostId(String ownerId, String kostId) throws SQLException {
+//        String query = "SELECT * FROM bookings WHERE owner = ?";
+//    }
 }

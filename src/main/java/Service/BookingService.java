@@ -33,11 +33,11 @@ public class BookingService {
 
     }
 
-    public boolean approve(KostModel kost) throws SQLException {
-
-    }
-
-    public boolean reject(KostModel kost) throws SQLException {
-
-    }
+//    public boolean approve(KostModel kost) throws SQLException {
+//
+//    }
+//
+//    public boolean reject(KostModel kost) throws SQLException {
+//
+//    }
 }
