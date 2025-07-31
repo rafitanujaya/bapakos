@@ -22,8 +22,10 @@ import Service.DataService;
 import javafx.scene.layout.StackPane;
 
 public class AdminDashboardView {
+    private Button tambahPropertiBtn;
+    private Button editPropertiBtn;
+    private Button hapusPropertiBtn;
 
-// Di dalam kelas AdminDashboardView
 
     public Parent getView() {
         VBox mainContent = new VBox(20);
@@ -246,13 +248,29 @@ public class AdminDashboardView {
     }
 
     private Node createRightSidebar(DataService dataService) {
-        // VBox utama untuk menampung kedua panel di sisi kanan
-        VBox rightSidebarContent = new VBox(20); // Jarak antar panel booking dan aksi cepat
+        // VBox utama untuk menampung panel di sisi kanan
+        VBox rightSidebarContent = new VBox(20);
 
-        // --- Panel Booking (kode lama) ---
-        VBox bookingPanel = new VBox(15);
-        Label bookingTitle = new Label("Booking Perlu Persetujuan");
-        bookingTitle.getStyleClass().add("panel-title");
+        // 1. Panggil metode helper untuk membuat panel booking
+        Node bookingPanel = createBookingPanel(dataService);
+
+        // 2. Panggil metode helper untuk membuat panel aksi cepat
+        Node quickActionsPanel = createQuickActionsPanel();
+
+        // Spacer untuk mendorong panel aksi cepat ke bawah
+        VBox spacer = new VBox();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+
+        // 3. Susun semua panel di dalam VBox utama
+        rightSidebarContent.getChildren().addAll(bookingPanel, spacer, quickActionsPanel);
+
+        return rightSidebarContent;
+    }
+
+    private Node createBookingPanel(DataService dataService) {
+        VBox panel = new VBox(15);
+        Label title = new Label("Booking Perlu Persetujuan");
+        title.getStyleClass().add("panel-title");
 
         VBox bookingCardsContainer = new VBox(10);
         ObservableList<BookingDummy> bookings = dataService.getPendingBookings();
@@ -260,19 +278,12 @@ public class AdminDashboardView {
             bookingCardsContainer.getChildren().add(createBookingCard(booking));
         }
 
-        ScrollPane bookingScrollPane = new ScrollPane(bookingCardsContainer);
-        bookingScrollPane.setFitToWidth(true);
-        bookingScrollPane.getStyleClass().add("no-border-scroll-pane");
+        ScrollPane scrollPane = new ScrollPane(bookingCardsContainer);
+        scrollPane.setFitToWidth(true);
+        scrollPane.getStyleClass().add("no-border-scroll-pane");
 
-        bookingPanel.getChildren().addAll(bookingTitle, bookingScrollPane);
-
-        // --- Panel Aksi Cepat (BARU) ---
-        Node quickActionsPanel = createQuickActionsPanel();
-
-        // Masukkan kedua panel ke dalam VBox utama sisi kanan
-        rightSidebarContent.getChildren().addAll(bookingPanel, quickActionsPanel);
-
-        return rightSidebarContent;
+        panel.getChildren().addAll(title, scrollPane);
+        return panel;
     }
 
     /**
@@ -283,16 +294,43 @@ public class AdminDashboardView {
         Label title = new Label("Aksi Cepat");
         title.getStyleClass().add("panel-title");
 
-        // Buat tombol-tombol aksi
-        Button tambahKosBtn = new Button("Tambah Properti Baru");
-        tambahKosBtn.setMaxWidth(Double.MAX_VALUE); // Tombol selebar panel
-        tambahKosBtn.getStyleClass().add("quick-action-button");
+        // --- Tombol Tambah Properti ---
+        ImageView addIcon = new ImageView(new Image("/img/add-circle-icon.png"));
+        addIcon.setFitWidth(18);
+        addIcon.setFitHeight(18);
+        tambahPropertiBtn = new Button("Tambah Properti");
+        tambahPropertiBtn.setGraphic(addIcon); // Tambahkan ikon
+        tambahPropertiBtn.setGraphicTextGap(10); // Atur jarak ikon & teks
+        tambahPropertiBtn.setMaxWidth(Double.MAX_VALUE);
+        tambahPropertiBtn.getStyleClass().add("quick-action-button");
+        tambahPropertiBtn.setId("add-button");
 
-        Button kirimPengingatBtn = new Button("Kirim Pengingat Tagihan");
-        kirimPengingatBtn.setMaxWidth(Double.MAX_VALUE);
-        kirimPengingatBtn.getStyleClass().add("quick-action-button");
+        // --- Tombol Edit Properti ---
+        ImageView editIcon = new ImageView(new Image("/img/edit-icon.png"));
+        editIcon.setFitWidth(18);
+        editIcon.setFitHeight(18);
+        editPropertiBtn = new Button("Edit Properti");
+        editPropertiBtn.setGraphic(editIcon); // Tambahkan ikon
+        editPropertiBtn.setGraphicTextGap(10);
+        editPropertiBtn.setMaxWidth(Double.MAX_VALUE);
+        editPropertiBtn.getStyleClass().add("quick-action-button");
+        editPropertiBtn.getStyleClass().addAll("quick-action-button", "edit-button");
+        editPropertiBtn.getStyleClass().add("quick-action-button");
+        editPropertiBtn.setId("edit-button");
 
-        panel.getChildren().addAll(title, tambahKosBtn, kirimPengingatBtn);
+        // --- Tombol Hapus Properti ---
+        ImageView deleteIcon = new ImageView(new Image("/img/delete-icon.png"));
+        deleteIcon.setFitWidth(18);
+        deleteIcon.setFitHeight(18);
+        hapusPropertiBtn = new Button("Hapus Properti");
+        hapusPropertiBtn.setGraphic(deleteIcon); // Tambahkan ikon
+        hapusPropertiBtn.setGraphicTextGap(10);
+        hapusPropertiBtn.setMaxWidth(Double.MAX_VALUE);
+        hapusPropertiBtn.getStyleClass().add("quick-action-button");
+        hapusPropertiBtn.getStyleClass().add("quick-action-button");
+        hapusPropertiBtn.setId("delete-button");
+
+        panel.getChildren().addAll(title, tambahPropertiBtn, editPropertiBtn, hapusPropertiBtn);
         return panel;
     }
 
@@ -318,4 +356,8 @@ public class AdminDashboardView {
         card.getChildren().addAll(info, spacer, approveBtn, declineBtn);
         return card;
     }
+
+    public Button getTambahPropertiBtn() {return tambahPropertiBtn;}
+    public Button getEditPropertiBtn() {return editPropertiBtn;}
+    public Button getHapusPropertiBtn() {return hapusPropertiBtn;}
 }

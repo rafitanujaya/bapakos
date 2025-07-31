@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Separator; // <-- Import baru
+import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -23,9 +23,6 @@ public class AdminPageView {
     private Button dashboardBtn;
     private Button transactionBtn;
     private Button orderBtn;
-    private Button addKosBtn;
-    private Button editKosBtn;
-    private Button deleteKosBtn;
 
     public AdminPageView() {
         root = new BorderPane();
@@ -50,16 +47,6 @@ public class AdminPageView {
         transactionBtn = createMenuButton("TransaksiDummy", "/img/transaction-icon.png");
         orderBtn = createMenuButton("Order", "/img/order-icon.png");
 
-        // Menu Aksi CRUD (Nonaktif)
-        addKosBtn = createMenuButton("Tambah Kos", "/img/add-circle-icon.png");
-        addKosBtn.setDisable(true); // <-- Dinonaktifkan
-
-        editKosBtn = createMenuButton("Ubah Kos", "/img/edit-icon.png");
-        editKosBtn.setDisable(true); // <-- Dinonaktifkan
-
-        deleteKosBtn = createMenuButton("Hapus Kos", "/img/delete-icon.png");
-        deleteKosBtn.setDisable(true); // <-- Dinonaktifkan
-
         // Pemisah visual antar grup menu
         Separator separator = new Separator();
         separator.setPadding(new Insets(10, 0, 10, 0));
@@ -68,11 +55,7 @@ public class AdminPageView {
         sidebar.getChildren().addAll(
                 dashboardBtn,
                 transactionBtn,
-                orderBtn,
-                separator, // Tambahkan pemisah
-                addKosBtn,
-                editKosBtn,
-                deleteKosBtn
+                orderBtn
         );
 
         return sidebar;
@@ -116,7 +99,6 @@ public class AdminPageView {
     }
 
     private Button createMenuButton(String text, String imagePath) {
-        // ... (isi createMenuButton Anda tetap sama)
         Button button = new Button(text);
         Image icon = new Image(imagePath);
         ImageView iconView = new ImageView(icon);
@@ -139,7 +121,4 @@ public class AdminPageView {
     public Button getDashboardBtn() { return dashboardBtn; }
     public Button getTransactionBtn() { return transactionBtn; }
     public Button getOrderBtn() { return orderBtn; }
-    public Button getAddKosBtn() { return addKosBtn; }
-    public Button getEditKosBtn() { return editKosBtn; }
-    public Button getDeleteKosBtn() { return deleteKosBtn; }
 }
