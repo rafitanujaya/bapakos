@@ -1,110 +1,142 @@
-/* File: styles.css - Tema Cerah & Teks Tebal */
+/* ==========================================================================
+   GAYA UNTUK HALAMAN LOGIN & REGISTER
+   ========================================================================== */
 
+/* * .root
+ * Digunakan oleh VBox utama di LoginView dan RegisterView.
+ * Ini berfungsi sebagai panel/kotak utama yang berisi semua elemen form.
+ * Memberi latar belakang putih, padding, sudut melengkung, dan bayangan.
+ */
 .root {
-    -fx-background-color: #f6f8fa;
-    -fx-padding: 20px;
+    -fx-background-color: white;
+    -fx-padding: 35px;
+    -fx-background-radius: 12px;
+    -fx-border-color: #E9ECEF;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 5);
+    -fx-max-width: 420px;
 }
 
-.logo-placeholder {
-    -fx-min-height: 50px;
-    -fx-min-width: 50px;
-    -fx-background-color: #e1e4e8;
-    -fx-background-radius: 50%;
+/*
+ * .scene-background
+ * Diterapkan pada StackPane pembungkus di ViewManager.
+ * Memberi warna latar belakang abu-abu terang pada seluruh jendela,
+ * di belakang panel login/register.
+ */
+.scene-background {
+    -fx-background-color: #F4F7FC;
 }
 
+/* * .form-box
+ * Kontainer VBox di dalam .root, hanya untuk mengelompokkan elemen form.
+ * Dibuat transparan agar menyatu dengan latar belakang .root.
+ */
+.form-box {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 0;
+}
+
+/* * .title-label
+ * Gaya untuk judul utama seperti "Masuk ke BapaKos".
+ */
 .title-label {
     -fx-font-size: 24px;
     -fx-text-fill: #24292f;
-    -fx-font-weight: bold; /* <-- Diubah menjadi bold */
+    -fx-font-weight: bold;
 }
 
-.form-box {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #d0d7de;
-    -fx-border-width: 1px;
-    -fx-border-radius: 6px;
-    -fx-background-radius: 6px;
-    -fx-padding: 20px;
-    -fx-alignment: top-left;
-}
-
+/* * .input-label
+ * Gaya untuk label di atas setiap kolom input (Email, Password).
+ */
 .input-label {
     -fx-font-size: 14px;
     -fx-text-fill: #24292f;
-    -fx-font-weight: bold; /* <-- Diubah menjadi bold */
+    -fx-font-weight: bold;
 }
 
+/* * .text-field, .password-field
+ * Gaya umum untuk semua kolom input teks.
+ */
 .text-field, .password-field {
     -fx-background-color: #ffffff;
-    -fx-text-fill: #24292f;
     -fx-border-color: #d0d7de;
     -fx-border-width: 1px;
     -fx-border-radius: 6px;
-    -fx-background-radius: 6px;
     -fx-font-size: 14px;
     -fx-padding: 8px;
 }
 
+/* * :focused pseudo-class
+ * Gaya tambahan saat pengguna mengklik atau fokus pada kolom input.
+ * Memberi border biru dan sedikit efek bayangan.
+ */
 .text-field:focused, .password-field:focused {
     -fx-border-color: #0969da;
-    -fx-background-color: #ffffff;
     -fx-effect: dropshadow(three-pass-box, rgba(9, 105, 218, 0.3), 5, 0, 0, 0);
 }
 
+/* * .sign-in-button
+ * Tombol aksi utama berwarna hijau (Login, Daftar).
+ */
 .sign-in-button {
     -fx-background-color: #2da44e;
     -fx-text-fill: white;
-    -fx-font-weight: bold; /* <-- Sudah bold */
+    -fx-font-weight: bold;
     -fx-background-radius: 6px;
     -fx-padding: 10px;
     -fx-font-size: 14px;
     -fx-cursor: hand;
-    -fx-border-width: 0;
 }
-
 .sign-in-button:hover {
     -fx-background-color: #2c974b;
 }
 
+/* * .register-button
+ * Tombol aksi sekunder berwarna biru.
+ */
 .register-button {
     -fx-background-color: #0969da;
     -fx-text-fill: white;
-    -fx-font-weight: bold; /* <-- Sudah bold */
+    -fx-font-weight: bold;
     -fx-background-radius: 6px;
     -fx-padding: 10px;
     -fx-font-size: 14px;
     -fx-cursor: hand;
-    -fx-border-width: 0;
 }
-
 .register-button:hover {
-    -fx-background-color: #f3f4f6;
-    -fx-border-color: rgba(36, 41, 47, 0.25);
+    -fx-background-color: #085ebd;
 }
 
-/* Styling untuk label "or" dan label umum lainnya */
-Label {
-    -fx-text-fill: #57606a;
-    -fx-font-weight: bold; /* <-- Diubah menjadi bold */
-}
+
+/* * .error-label
+ * Teks yang muncul saat terjadi kesalahan validasi.
+ */
 .error-label {
-    -fx-text-fill: #D32F2F; /* Warna merah tua yang tidak terlalu terang */
+    -fx-text-fill: #D32F2F;
     -fx-font-weight: bold;
 }
 
+/* * .error-field
+ * Border merah untuk kolom input yang isinya salah.
+ */
 .error-field {
-    -fx-border-color: #D32F2F; /* Warna border merah */
+    -fx-border-color: #D32F2F;
     -fx-border-width: 2px;
     -fx-border-radius: 4px;
 }
 
+/* * .role-radio
+ * Gaya untuk komponen RadioButton pemilihan peran.
+ * `.text` menargetkan teksnya, `.radio` menargetkan lingkarannya,
+ * dan `.dot` menargetkan titik di dalamnya saat dipilih.
+ */
 .role-radio .text {
-    -fx-font-weight: bold; /* Membuat teks di dalam radio button menjadi tebal */
-    -fx-font-size: 16px;
-    -fx-fill: #24292e; /* Warna teks */
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-fill: #24292e;
 }
-
-/* Gaya untuk lingkaran radio button itu sendiri (opsional) */
 .role-radio .radio {
     -fx-border-width: 2px;
     -fx-border-color: #0078D7;
@@ -112,13 +144,25 @@ Label {
     -fx-border-radius: 15px;
     -fx-padding: 3px;
 }
-
-/* Gaya saat radio button dipilih */
 .role-radio:selected .radio .dot {
     -fx-background-color: #0078D7;
 }
 
-/* --- Sidebar Styling (Light Theme) --- */
+
+/* ==========================================================================
+   GAYA UNTUK HALAMAN DASHBOARD ADMIN (PEMILIK KOS)
+   ========================================================================== */
+
+/* * .dashboard-root
+ * Latar belakang utama untuk seluruh area konten dashboard.
+ */
+.dashboard-root {
+    -fx-background-color: #F8F9FA;
+}
+
+/* * .sidebar
+ * Panel navigasi di sisi kiri. Latar belakang putih dengan garis pemisah kanan.
+ */
 .sidebar {
     -fx-background-color: #FFFFFF;
     -fx-pref-width: 260px;
@@ -126,6 +170,9 @@ Label {
     -fx-border-width: 0 1px 0 0;
 }
 
+/* * .menu-button
+ * Gaya untuk setiap tombol di dalam sidebar.
+ */
 .menu-button {
     -fx-background-color: transparent;
     -fx-font-size: 15px;
@@ -136,88 +183,344 @@ Label {
     -fx-padding: 12px 15px;
     -fx-background-radius: 8px;
 }
-
 .menu-button:hover {
     -fx-background-color: #F1F3F5;
     -fx-text-fill: #212529;
 }
-
 .menu-button:selected, .menu-button.active {
     -fx-background-color: #E7F5FF;
     -fx-text-fill: #1971C2;
 }
 
-/* Mengubah warna ikon saat tombol aktif/dipilih */
+/* * .menu-button .image-view
+ * Efek pada ikon di dalam tombol menu yang aktif/dipilih.
+ */
 .menu-button:selected .image-view,
 .menu-button.active .image-view {
-    /* Efek ini membuat ikon menjadi warna biru, tapi memerlukan sedikit trik */
-    /* Cara termudah adalah menyiapkan file ikon versi biru dan menggantinya di Java */
-    /* Namun, efek drop shadow bisa memberi ilusi warna */
     -fx-effect: dropshadow(gaussian, #1971C2, 10, 0.5, 0, 0);
 }
 
-
-/* --- Top Bar Styling --- */
+/* * .top-bar
+ * Panel navigasi di bagian atas. Latar belakang putih dengan garis pemisah bawah.
+ */
 .top-bar {
     -fx-background-color: #FFFFFF;
     -fx-border-color: #E9ECEF;
     -fx-border-width: 0 0 1px 0;
 }
 
+/* * .user-name
+ * Teks nama pengguna di top bar.
+ */
 .user-name {
     -fx-font-size: 15px;
     -fx-font-weight: bold;
     -fx-text-fill: #495057;
 }
 
-/* --- Content Area Styling --- */
+/* * .content-placeholder
+ * Teks placeholder di tengah area konten sebelum ada data.
+ */
 .content-placeholder {
     -fx-font-size: 22px;
     -fx-text-fill: #ADB5BD;
 }
 
+/* * .profile-menu
+ * Pop-up menu yang muncul saat tombol profil diklik.
+ */
 .profile-menu {
     -fx-background-color: white;
-    -fx-background-insets: 0;
     -fx-padding: 5px;
     -fx-background-radius: 8px;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);
 }
-
 .profile-menu .menu-item {
     -fx-padding: 8px 12px;
 }
-
 .profile-menu .menu-item:hover {
     -fx-background-color: #F1F3F5;
     -fx-background-radius: 6px;
 }
 
-/* Menargetkan teks (label) di dalam menu item logout */
+/* * .logout-menu-item
+ * Gaya khusus untuk opsi "Logout" agar berwarna merah.
+ */
 .logout-menu-item .label {
-    -fx-text-fill: #EA3323; /* Membuat teks menjadi merah */
+    -fx-text-fill: #EA3323;
 }
-
-/* Efek hover untuk menu item logout (opsional tapi disarankan) */
 .logout-menu-item:hover {
-    -fx-background-color: #FFF5F5; /* Latar belakang menjadi merah sangat terang */
+    -fx-background-color: #FFF5F5;
 }
-
-/* Mengubah warna teks dan ikon menjadi lebih gelap saat hover */
 .logout-menu-item:hover .label,
 .logout-menu-item:hover .image-view {
     -fx-text-fill: #C92A2A;
 }
 
+/* * .profile-button
+ * Tombol profil di pojok kanan atas top bar.
+ */
 .profile-button {
-    -fx-background-color: transparent; /* Latar belakang transparan */
+    -fx-background-color: transparent;
     -fx-font-size: 15px;
     -fx-text-fill: #495057;
     -fx-font-weight: bold;
     -fx-padding: 8px 12px;
-    -fx-background-radius: 8px; /* Sudut sedikit melengkung */
+    -fx-background-radius: 8px;
+}
+.profile-button:hover {
+    -fx-background-color: #F1F3F5;
 }
 
-.profile-button:hover {
-    -fx-background-color: #F1F3F5; /* Efek hover yang sama dengan menu sidebar */
+
+/* ==========================================================================
+   GAYA UNTUK HALAMAN DASHBOARD USER (PENYEWA)
+   ========================================================================== */
+
+/* * .user-dashboard-root
+ * Latar belakang utama untuk dashboard penyewa (pencarian kos).
+ */
+.user-dashboard-root {
+    -fx-background-color: #f6f8fa;
+}
+
+/* * .nav-button
+ * Tombol navigasi di top bar (Buy, Rent, dll).
+ */
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-font-size: 15px;
+    -fx-text-fill: #64748B;
+    -fx-font-weight: bold;
+}
+.nav-button:hover {
+    -fx-text-fill: #1E293B;
+}
+
+/* * .search-field
+ * Kolom pencarian di top bar halaman penyewa.
+ */
+.search-field {
+    -fx-background-color: #F8F9FA;
+    -fx-border-color: #E9ECEF;
+    -fx-border-radius: 8px;
+    -fx-padding: 8px 12px;
+    -fx-pref-width: 250px;
+}
+
+/* * .filter-sidebar
+ * Sidebar di sisi kiri yang berisi opsi filter pencarian.
+ */
+.filter-sidebar {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E9ECEF;
+    -fx-border-width: 0 1px 0 0;
+}
+
+/* * .filter-title
+ * Judul di dalam panel filter ("Custom Filter").
+ */
+.filter-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1E293B;
+}
+
+
+/* ==========================================================================
+   GAYA UNTUK KONTEN DI DALAM DASHBOARD
+   ========================================================================== */
+
+/* * .stat-card
+ * Kartu-kartu statistik di bagian atas dashboard admin.
+ */
+.stat-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12px;
+    -fx-border-color: #E9ECEF;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.03), 5, 0, 0, 2);
+}
+
+/* * .stat-title, .stat-value, .stat-subtext
+ * Gaya untuk teks di dalam kartu statistik.
+ */
+.stat-title {
+    -fx-font-size: 14px;
+    -fx-text-fill: #6C757D;
+    -fx-font-weight: bold;
+}
+.stat-value {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #212529;
+    -fx-padding: 5px 0;
+}
+.stat-subtext {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6C757D;
+}
+
+/* * .kos-card
+ * Kartu untuk menampilkan satu item kos di FlowPane.
+ */
+.kos-card {
+    -fx-background-color: white;
+    -fx-padding: 20px;
+    -fx-background-radius: 12px;
+    -fx-border-color: #E9ECEF;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+    -fx-pref-width: 280px;
+    -fx-pref-height: 150px;
+}
+
+/* * .add-kos-button
+ * Tombol putus-putus untuk menambah kos baru.
+ */
+.add-kos-button {
+    -fx-background-color: #F8F9FA;
+    -fx-text-fill: #495057;
+    -fx-font-weight: bold;
+    -fx-border-color: #DEE2E6;
+    -fx-border-style: dashed;
+    -fx-border-width: 2px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-pref-width: 280px;
+    -fx-pref-height: 150px;
+    -fx-cursor: hand;
+}
+.add-kos-button:hover {
+    -fx-background-color: #F1F3F5;
+}
+
+/* * .panel-title
+ * Judul untuk setiap panel konten di dalam dashboard (misal: "Transaksi Terbaru").
+ */
+.panel-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #212529;
+}
+
+/* * .booking-panel
+ * Panel di sisi kanan dashboard admin yang berisi daftar booking.
+ */
+.booking-panel {
+    -fx-min-width: 320px;
+    -fx-max-width: 320px;
+}
+
+/* * .booking-card
+ * Kartu untuk satu item permintaan booking.
+ */
+.booking-card {
+    -fx-background-color: #F8F9FA;
+    -fx-background-radius: 8px;
+    -fx-border-color: #DEE2E6;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-alignment: center-left;
+}
+
+/* * .approve-button, .decline-button
+ * Tombol setuju (hijau) dan tolak (merah) di kartu booking.
+ */
+.approve-button, .decline-button {
+    -fx-font-weight: bold;
+    -fx-background-radius: 50%;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+}
+.approve-button {
+    -fx-background-color: #D4EDDA;
+    -fx-text-fill: #155724;
+}
+.decline-button {
+    -fx-background-color: #F8D7DA;
+    -fx-text-fill: #721C24;
+}
+
+/* * .no-border-scroll-pane
+ * Menghilangkan border dan latar belakang default dari ScrollPane.
+ */
+.no-border-scroll-pane {
+    -fx-background-color: transparent;
+}
+.no-border-scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* --- Gaya untuk Tabel Transaksi --- */
+
+/* Gaya untuk header kustom */
+.transaction-header {
+    -fx-background-color: #F8F9FA;
+    -fx-font-weight: bold;
+    -fx-border-color: #E9ECEF;
+    -fx-border-width: 1px 0 1px 0; /* Border atas dan bawah */
+}
+
+/* Gaya untuk setiap baris transaksi (HBox) */
+.transaction-row {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent #F1F3F5 transparent; /* Garis bawah tipis */
+}
+.transaction-row:hover {
+    -fx-background-color: #F8F9FA; /* Efek hover */
+}
+.transaction-row .label {
+    -fx-font-size: 14px;
+}
+
+/* Gambar bulat di dalam baris */
+.table-image {
+    -fx-border-radius: 50%;
+    -fx-background-radius: 50%;
+}
+
+/* Gaya untuk label status "pil" (tetap sama) */
+.status-label {
+    -fx-padding: 5px 12px;
+    -fx-background-radius: 15px;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+/* ... (semua style .status-paid, .status-waiting, dll., tetap sama) ... */
+
+/* Warna spesifik untuk setiap status */
+.status-paid {
+    -fx-background-color: #D4EDDA; /* Latar Hijau */
+    -fx-text-fill: #155724;      /* Teks Hijau Tua */
+}
+.status-waiting {
+    -fx-background-color: #D1ECF1; /* Latar Biru */
+    -fx-text-fill: #0C5460;      /* Teks Biru Tua */
+}
+.status-failed {
+    -fx-background-color: #F8D7DA; /* Latar Merah */
+    -fx-text-fill: #721C24;      /* Teks Merah Tua */
+}
+.status-check-out {
+    -fx-background-color: #FFF3CD; /* Latar Kuning */
+    -fx-text-fill: #856404;      /* Teks Coklat */
+}
+
+.table-image {
+    -fx-border-radius: 50%; /* Membuat gambar menjadi bulat */
+    -fx-background-radius: 50%;
+}
+
+/* Membuat scrollbar vertikal menjadi lebih tipis dan minimalis */
+.scroll-pane > .scroll-bar:vertical {
+    -fx-pref-width: 8; /* Lebar scrollbar dibuat lebih tipis */
+    -fx-background-color: transparent; /* Hilangkan latar belakang track-nya */
+}
+
+/* Mengatur warna dan bentuk thumb (bagian yang digeser) */
+.scroll-pane > .scroll-bar:vertical .thumb {
+    -fx-background-color: #CED4DA; /* Warna abu-abu terang untuk thumb */
+    -fx-background-radius: 4; /* Membuat sudutnya sedikit melengkung */
 }

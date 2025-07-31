@@ -1,9 +1,9 @@
-package Controller;
+package Controller.Register;
 
-import View.RegisterView;
-import javafx.beans.binding.Bindings;
+import Controller.ViewManager;
+import View.Register.RegisterView;
 import javafx.beans.binding.BooleanBinding;
-import javafx.scene.control.TextField;
+
 import java.util.ArrayList;
 import java.util.List;
 

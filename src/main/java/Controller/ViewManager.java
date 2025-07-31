@@ -1,74 +1,100 @@
 package Controller; // Atau package yang sesuai
 
-import View.LoginView;
-import View.RegisterView;
-import View.AdminDashboardView;
+import Controller.Admin.AdminPageController;
+import Controller.Login.LoginController;
+import Controller.Register.RegisterController;
+import View.Login.LoginView;
+import View.Register.RegisterView;
+import View.User.UserDashboardView;
+import View.Admin.AdminPageView;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 public class ViewManager {
 
     private final Stage primaryStage;
     private Scene mainScene;
+    private Parent loginRoot;
+    private Parent registerRoot;
+    private Parent adminDashboardRoot;
+    private Parent userDashboardRoot;
 
     public ViewManager(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
     public void showLoginView() {
-        // 1. Buat instance dari kelas View
-        LoginView loginView = new LoginView();
+        // Cek jika view belum pernah dibuat
+        if (loginRoot == null) {
+            LoginView loginView = new LoginView();
+            new LoginController(loginView, this);
 
-        // 2. Buat instance Controller, lalu berikan View & ViewManager
-        new LoginController(loginView, this);
+            // Bungkus dengan StackPane untuk latar belakang
+            StackPane background = new StackPane(loginView.getView());
+            background.getStyleClass().add("scene-background"); // Gunakan style class
+            loginRoot = background;
+        }
 
-        // 3. Ambil layout Parent dari objek view
-        // Disarankan untuk mengubah nama metode getRoot() menjadi getView() di LoginView
-        Parent loginRoot = loginView.getView();
-
-        // 4. Buat Scene baru HANYA jika belum ada, lalu tampilkan
         if (mainScene == null) {
             mainScene = new Scene(loginRoot, 1220, 720);
-            // Hubungkan CSS sekali saja saat scene dibuat
             mainScene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
             primaryStage.setScene(mainScene);
         } else {
             mainScene.setRoot(loginRoot);
         }
 
+        // Binding tetap diperlukan untuk view yang baru dibuat
+        if (loginRoot instanceof Region) {
+            ((Region) loginRoot).prefWidthProperty().bind(mainScene.widthProperty());
+            ((Region) loginRoot).prefHeightProperty().bind(mainScene.heightProperty());
+        }
+
         primaryStage.setTitle("Login");
         primaryStage.show();
     }
-
 
     /**
      * Menampilkan view register dengan mengganti konten scene yang ada.
      */
     public void showRegisterView() {
-        RegisterView registerView = new RegisterView();
+        // Cek jika view belum pernah dibuat
+        if (registerRoot == null) {
+            RegisterView registerView = new RegisterView();
+            new RegisterController(registerView, this);
 
-        // PASTIKAN BARIS INI ADA DAN AKTIF
-        new RegisterController(registerView, this);
+            StackPane background = new StackPane(registerView.getView());
+            background.getStyleClass().add("scene-background"); // Gunakan style class
+            registerRoot = background;
 
-        Parent registerRoot = registerView.getView();
-        mainScene.setRoot(registerRoot);
+            // Binding hanya saat pertama kali dibuat
+            if (registerRoot instanceof Region) {
+                ((Region) registerRoot).prefWidthProperty().bind(mainScene.widthProperty());
+                ((Region) registerRoot).prefHeightProperty().bind(mainScene.heightProperty());
+            }
+        }
+
+        mainScene.setRoot(registerRoot); // Tampilkan view yang sudah ada
         primaryStage.setTitle("Register");
     }
 
     public void showAdminDashboard() {
-        AdminDashboardView adminView = new AdminDashboardView();
-        new AdminDashboardController(adminView, this);
+        AdminPageView adminView = new AdminPageView();
+        new AdminPageController(adminView, this);
+
         Parent adminRoot = adminView.getView();
         mainScene.setRoot(adminRoot);
+
         primaryStage.setTitle("Dashboard Pemilik Kos");
     }
 
-//    public void showUserDashboard() {
-//        UserDashboardView userView = new UserDashboardView();
-//        // new UserDashboardController(userView, this); // Jika perlu controller
-//        Parent userRoot = userView.getView();
-//        mainScene.setRoot(userRoot);
-//        primaryStage.setTitle("Dashboard Penyewa Kos");
-//    }
+    public void showUserDashboard() {
+        UserDashboardView userView = new UserDashboardView();
+        // new UserDashboardController(userView, this); // Jika perlu controller
+        Parent userRoot = userView.getView();
+        mainScene.setRoot(userRoot);
+        primaryStage.setTitle("Dashboard Penyewa Kos");
+    }
 }

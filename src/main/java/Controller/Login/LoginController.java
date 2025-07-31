@@ -1,6 +1,7 @@
-package Controller;
+package Controller.Login;
 
-import View.LoginView;
+import Controller.ViewManager;
+import View.Login.LoginView;
 import javafx.beans.binding.Bindings;
 import javafx.scene.control.RadioButton;
 
@@ -43,7 +44,7 @@ public class LoginController {
                 viewManager.showAdminDashboard();
             } else if (selectedRole.equals("Penyewa Kos")) {
                 // Jika peran adalah Penyewa Kos, arahkan ke dashboard user
-                //viewManager.showUserDashboard();
+                viewManager.showUserDashboard();
             }
         });
 

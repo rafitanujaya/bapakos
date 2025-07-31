@@ -1,4 +1,4 @@
-package View;
+package View.Login;
 
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -78,12 +78,14 @@ public class LoginView {
 
         // Radio Buttons
         roleToggleGroup = new ToggleGroup();
+
         pemilikRadio = new RadioButton("Pemilik Kos");
+        pemilikRadio.getStyleClass().add("role-radio"); // <-- Samakan class-nya
         pemilikRadio.setToggleGroup(roleToggleGroup);
-        pemilikRadio.getStyleClass().add("role-radio");
+
         penyewaRadio = new RadioButton("Penyewa Kos");
+        penyewaRadio.getStyleClass().add("role-radio"); // <-- Samakan class-nya
         penyewaRadio.setToggleGroup(roleToggleGroup);
-        penyewaRadio.getStyleClass().add("role-radio");
         penyewaRadio.setSelected(true);
 
         roleSelectionBox = new HBox(25);
@@ -98,14 +100,8 @@ public class LoginView {
 
         // Susun semua komponen di root VBox
         root.getChildren().addAll(
-                logoView,
-                titleLabel,
-                formBox,
-                roleSelectionBox,
-                loginBtn,
-                orLabel,
-                registerButton,
-                errorLabel
+                logoView, titleLabel, formBox, roleSelectionBox, loginBtn,
+                orLabel, registerButton, errorLabel
         );
     }
 
