@@ -17,85 +17,83 @@ import javafx.scene.layout.VBox;
 public class AdminPageView {
 
     private final BorderPane root;
-    private Button profileBtn;
-
-    // --- 1. Deklarasikan semua properti Button ---
     private Button dashboardBtn;
     private Button transactionBtn;
     private Button orderBtn;
+    // Tombol CRUD yang nonaktif
+    private Button addKosBtn;
+    private Button editKosBtn;
+    private Button deleteKosBtn;
+    // Tombol baru untuk logout
+    private Button logoutBtn;
 
     public AdminPageView() {
         root = new BorderPane();
         root.getStyleClass().add("dashboard-root");
-        root.setTop(createTopBar());
+
+        // Top bar tidak lagi digunakan
+        // root.setTop(createTopBar());
         root.setLeft(createSidebar());
-        Label contentPlaceholder = new Label("Konten Dashboard Muncul di Sini");
-        contentPlaceholder.getStyleClass().add("content-placeholder");
-        root.setCenter(contentPlaceholder);
+
+        // Konten utama tetap di tengah
+        // Ini akan diganti oleh controller nanti
+        root.setCenter(new Label("Konten Awal"));
     }
 
     private Node createSidebar() {
         VBox sidebar = new VBox();
-        sidebar.setPadding(new Insets(20));
+        sidebar.setPadding(new Insets(25, 20, 25, 20)); // Padding disesuaikan
         sidebar.setSpacing(10);
         sidebar.getStyleClass().add("sidebar");
 
-        // --- 2. Inisialisasi semua tombol ---
+        // --- 1. Bagian Logo (pindah dari top bar) ---
+        VBox logoBox = new VBox(10);
+        logoBox.setAlignment(Pos.CENTER_LEFT);
+        ImageView logoIcon = new ImageView(new Image("/img/bapa-kos-icon-png.png"));
+        logoIcon.setFitHeight(110);
+        logoIcon.setFitWidth(110);
+        Label logoText = new Label("BapaKos");
+        logoText.getStyleClass().add("logo-text");
+        logoBox.getChildren().addAll(logoIcon, logoText);
+        logoBox.setAlignment(Pos.CENTER);
+        VBox.setMargin(logoBox, new Insets(0, 0, 30, 0));
 
-        // Menu Utama (Aktif)
+        // --- 2. Bagian Menu Utama ---
         dashboardBtn = createMenuButton("Dashboard", "/img/home-icon.png");
-        transactionBtn = createMenuButton("TransaksiDummy", "/img/transaction-icon.png");
+        transactionBtn = createMenuButton("Transaksi", "/img/transaction-icon.png");
         orderBtn = createMenuButton("Order", "/img/order-icon.png");
 
-        // Pemisah visual antar grup menu
         Separator separator = new Separator();
         separator.setPadding(new Insets(10, 0, 10, 0));
 
-        // Tambahkan semua tombol ke sidebar
-        sidebar.getChildren().addAll(
-                dashboardBtn,
-                transactionBtn,
-                orderBtn
-        );
+        // Menu CRUD (Nonaktif)
+        addKosBtn = createMenuButton("Tambah Kos", "/img/add-circle-icon.png");
+        editKosBtn = createMenuButton("Ubah Kos", "/img/edit-icon.png");
+        deleteKosBtn = createMenuButton("Hapus Kos", "/img/delete-icon.png");
 
-        return sidebar;
-    }
+        VBox menuBox = new VBox(5, dashboardBtn, transactionBtn, orderBtn, separator, addKosBtn, editKosBtn, deleteKosBtn);
 
-    // Metode createTopBar() dan createMenuButton() tidak perlu diubah
-    private Node createTopBar() {
-        // ... (isi createTopBar Anda tetap sama)
-        HBox topBar = new HBox();
-        topBar.setPadding(new Insets(15, 30, 15, 30));
-        topBar.setAlignment(Pos.CENTER_LEFT);
-        topBar.getStyleClass().add("top-bar");
+        // --- 3. Spacer untuk mendorong profil ke bawah ---
+        VBox spacer = new VBox();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
 
-        HBox titleSection = new HBox(10);
-        titleSection.setAlignment(Pos.CENTER);
-
-        ImageView maskot1 = new ImageView(new Image("/img/bapa-kos-icon-png.png"));
-        maskot1.setFitHeight(60);
-        maskot1.setFitWidth(60);
-
-        ImageView maskot2 = new ImageView(new Image("/img/bapa-kos-text-png.png"));
-        maskot2.setFitHeight(60);
-        maskot2.setFitWidth(110);
-
-        titleSection.getChildren().addAll(maskot1, maskot2);
-
-        HBox spacer = new HBox();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
+        // --- 4. Bagian Profil & Logout (pindah dari top bar) ---
         ImageView profileIcon = new ImageView(new Image("/img/profile-icon.png"));
-        profileIcon.setFitHeight(24);
-        profileIcon.setFitWidth(24);
+        profileIcon.setFitHeight(36);
+        profileIcon.setFitWidth(36);
+        Label profileName = new Label("Admin");
+        profileName.getStyleClass().add("profile-name");
+        HBox profileBox = new HBox(10, profileIcon, profileName);
+        profileBox.setAlignment(Pos.CENTER_LEFT);
+        VBox.setMargin(profileBox, new Insets(0, 0, 10, 0));
 
-        profileBtn = new Button("Nama Admin");
-        profileBtn.setGraphic(profileIcon);
-        profileBtn.getStyleClass().add("profile-button");
-        profileBtn.setGraphicTextGap(10);
-        topBar.getChildren().addAll(titleSection, spacer, profileBtn);
+        logoutBtn = new Button("Logout");
+        logoutBtn.setMaxWidth(Double.MAX_VALUE);
+        logoutBtn.getStyleClass().add("logout-button-sidebar");
 
-        return topBar;
+        // Susun semua bagian di dalam sidebar
+        sidebar.getChildren().addAll(logoBox, menuBox, spacer, profileBox, logoutBtn);
+        return sidebar;
     }
 
     private Button createMenuButton(String text, String imagePath) {
@@ -116,9 +114,12 @@ public class AdminPageView {
     }
     public BorderPane getRootPane() {return root;}
 
-    // --- 3. Getter untuk semua tombol ---
-    public Button getProfileBtn() { return profileBtn; }
+    // --- Getter Disesuaikan ---
     public Button getDashboardBtn() { return dashboardBtn; }
     public Button getTransactionBtn() { return transactionBtn; }
     public Button getOrderBtn() { return orderBtn; }
+    public Button getAddKosBtn() { return addKosBtn; }
+    public Button getEditKosBtn() { return editKosBtn; }
+    public Button getDeleteKosBtn() { return deleteKosBtn; }
+    public Button getLogoutBtn() { return logoutBtn; }
 }

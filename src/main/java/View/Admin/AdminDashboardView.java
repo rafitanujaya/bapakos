@@ -1,363 +1,205 @@
 package View.Admin;
 
-import Model.BookingDummy;
-import Model.TransaksiDummy;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
+import Service.KosServiceDummy;
+import Model.KosDummy;
+import View.Controller.AdminDashboardController;
+import javafx.scene.shape.Rectangle;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Separator;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import Service.DataService;
-import javafx.scene.layout.StackPane;
 
 public class AdminDashboardView {
-    private Button tambahPropertiBtn;
-    private Button editPropertiBtn;
-    private Button hapusPropertiBtn;
 
+    private VBox mainContent;
+    private VBox rowsContainer;
+    private Button searchButton;
+    private TextField searchField;
 
+    public AdminDashboardView() {
+        // Inisialisasi semua komponen di constructor
+        mainContent = new VBox(25);
+        mainContent.setPadding(new Insets(30));
+
+        Label welcomeLabel = new Label("Selamat Datang Fauzi Tester");
+        welcomeLabel.getStyleClass().add("welcome-title");
+        HBox statsCard = createStatsCard();
+
+        VBox kosTablePanel = createKosTablePanel();
+        VBox.setVgrow(kosTablePanel, Priority.ALWAYS);
+
+        mainContent.getChildren().addAll(welcomeLabel, statsCard, kosTablePanel);
+    }
+    // Metode getView() sekarang hanya mengembalikan root yang sudah dibuat
     public Parent getView() {
-        VBox mainContent = new VBox(20);
-        mainContent.setPadding(new Insets(20));
-
-        DataService dataService = new DataService();
-
-        // Kartu Statistik Tunggal (tidak berubah)
-        HBox singleStatCard = createStatsCardBox();
-
-        // HBox ini sekarang akan menjadi satu kartu besar
-        HBox bodyContent = new HBox(20);
-        bodyContent.getStyleClass().add("content-card");
-        bodyContent.setPadding(new Insets(20));
-
-        // Panel kiri (Transaksi)
-        Node transaksiPanel = createTransaksiPanel(dataService);
-
-        // Panel kanan (Booking & Aksi Cepat)
-        Node rightSidebar = createRightSidebar(dataService);
-
-        // --- PERBAIKAN DI SINI ---
-
-        // 1. Beri panel kanan lebar minimum agar tidak terlalu terhimpit
-        rightSidebar.setStyle("-fx-min-width: 280px;");
-
-        // 2. Perintahkan panel transaksi untuk mengambil semua sisa ruang
-        HBox.setHgrow(transaksiPanel, Priority.ALWAYS);
-
-        // -------------------------
-
-        // Masukkan kedua panel ke dalam HBox
-        bodyContent.getChildren().addAll(transaksiPanel, rightSidebar);
-
-        // Gabungkan semua
-        mainContent.getChildren().addAll(singleStatCard, bodyContent);
         return mainContent;
     }
 
-    private HBox createStatsCardBox() {
-        HBox cardBox = new HBox();
-        cardBox.setPadding(new Insets(20));
-        cardBox.setSpacing(20);
-        cardBox.getStyleClass().add("stat-card");
-
-        VBox revenueBlock = createStatBlock("Total Revenue", "Rp9.000.000,00", "+7.5% dari bulan lalu", "/img/balance-icon.png");
-        VBox kosBlock = createStatBlock("Jumlah Kos Dimiliki", "12", "+2 kos baru", "/img/property-icon.png");
-        VBox transaksiBlock = createStatBlock("Jumlah TransaksiDummy", "89", "5 transaksi berhasil", "/img/transaction-success-icon.png");
-
-        HBox.setHgrow(revenueBlock, Priority.ALWAYS);
-        HBox.setHgrow(kosBlock, Priority.ALWAYS);
-        HBox.setHgrow(transaksiBlock, Priority.ALWAYS);
-
-        Separator s1 = new Separator(Orientation.VERTICAL);
-        Separator s2 = new Separator(Orientation.VERTICAL);
-
-        cardBox.getChildren().addAll(revenueBlock, s1, kosBlock, s2, transaksiBlock);
+    // Metode untuk kartu statistik
+    private HBox createStatsCard() {
+        HBox cardBox = new HBox(1);
+        cardBox.getStyleClass().add("stat-card-container");
+        cardBox.getChildren().addAll(
+                createStatBlock("Total Revenue", "Rp 9.000.000,00", "+7.5% dari bulan lalu"),
+                createStatBlock("Jumlah Kos Dimiliki", "12", "+2 kos baru"),
+                createStatBlock("Jumlah Transaksi", "89", "5 transaksi berhasil")
+        );
         return cardBox;
     }
 
-    private VBox createStatBlock(String title, String value, String subtext, String imagePath) {
+    private Node createStatBlock(String title, String value, String subtext) {
         VBox block = new VBox(5);
-        block.setMaxWidth(Double.MAX_VALUE);
-        HBox titleBox = new HBox(10);
-        ImageView icon = new ImageView(new Image(imagePath));
-        icon.setFitWidth(24);
-        icon.setFitHeight(24);
+        block.setPadding(new Insets(20));
+        block.getStyleClass().add("stat-block");
+        HBox.setHgrow(block, Priority.ALWAYS);
+
+        // 1. Buat Label untuk judul (teks kecil di atas)
         Label titleLabel = new Label(title);
         titleLabel.getStyleClass().add("stat-title");
-        titleBox.getChildren().addAll(icon, titleLabel);
+
+        // 2. Buat Label untuk nilai utama (angka besar)
         Label valueLabel = new Label(value);
         valueLabel.getStyleClass().add("stat-value");
+
+        // 3. Buat Label untuk subteks (teks kecil di bawah)
         Label subtextLabel = new Label(subtext);
         subtextLabel.getStyleClass().add("stat-subtext");
-        block.getChildren().addAll(titleBox, valueLabel, subtextLabel);
+
+        // Masukkan semua label ke dalam VBox
+        block.getChildren().addAll(titleLabel, valueLabel, subtextLabel);
+
         return block;
     }
 
-    private Node createTransaksiPanel(DataService dataService) {
-        VBox panel = new VBox(15);
-        Label title = new Label("Recent Transaction");
+    // Metode untuk membuat seluruh panel tabel kos (tanpa data)
+    private VBox createKosTablePanel() {
+        VBox tablePanel = new VBox();
+        tablePanel.getStyleClass().add("table-panel");
+        VBox.setVgrow(tablePanel, Priority.ALWAYS);
+
+        //search bar
+        HBox tableHeader = new HBox();
+        tableHeader.setPadding(new Insets(20));
+        tableHeader.setAlignment(Pos.CENTER_LEFT);
+        Label title = new Label("Semua Kost Yang dimiliki");
         title.getStyleClass().add("panel-title");
+        HBox spacer = new HBox();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        // VBox untuk menampung semua baris transaksi
-        VBox rowsContainer = new VBox();
+        searchField = new TextField();
+        searchField.setPromptText("Cari Kos...");
+        searchField.getStyleClass().add("search-field");
 
-        // Buat header kustom
-        rowsContainer.getChildren().add(createTransaksiHeader());
+        ImageView searchIcon = new ImageView(new Image("/img/search-icon-white.png"));
+        searchIcon.setFitWidth(20);
+        searchIcon.setFitHeight(20);
+        searchButton = new Button();
+        searchButton.setGraphic(searchIcon);
+        searchButton.getStyleClass().add("create-button");
+        tableHeader.getChildren().addAll(title, spacer, searchField, searchButton);
 
-        // Ambil data dan buat satu HBox untuk setiap baris
-        ObservableList<TransaksiDummy> transactions = dataService.getRecentTransactions();
-        for (TransaksiDummy trx : transactions) {
-            rowsContainer.getChildren().add(createTransaksiRow(trx));
-        }
 
-        // Bungkus VBox dengan ScrollPane
+        VBox tableWrapper = new VBox();
+        Node headerRow = createKosHeaderRow();
+
+        rowsContainer = new VBox();
+        rowsContainer.getStyleClass().add("rows-container");
+        // -------------------------
+
         ScrollPane scrollPane = new ScrollPane(rowsContainer);
-        scrollPane.setFitToWidth(true); // Penting agar konten memenuhi lebar
-        scrollPane.getStyleClass().add("table-scroll-pane");
-
-        // Atur agar ScrollPane meregang secara vertikal
+        scrollPane.setFitToWidth(true);
+        scrollPane.getStyleClass().add("no-border-scroll-pane");
         VBox.setVgrow(scrollPane, Priority.ALWAYS);
 
-        panel.getChildren().addAll(title, scrollPane);
-        return panel;
+        tableWrapper.getChildren().addAll(headerRow, scrollPane);
+
+        // ... (kode untuk clip & margin tetap sama)
+        Rectangle clip = new Rectangle();
+        clip.setArcWidth(16);
+        clip.setArcHeight(16);
+        clip.widthProperty().bind(tableWrapper.widthProperty());
+        clip.heightProperty().bind(tableWrapper.heightProperty());
+        tableWrapper.setClip(clip);
+
+        tablePanel.getChildren().addAll(tableHeader, tableWrapper);
+        VBox.setMargin(tableWrapper, new Insets(0, 20, 20, 20));
+        return tablePanel;
     }
 
-    /**
-     * Membuat satu baris HBox untuk menampilkan data transaksiDummy.
-     */
-    private Node createTransaksiRow(TransaksiDummy transaksiDummy) {
-        HBox row = new HBox(10);
-        row.setPadding(new Insets(15));
-        row.setAlignment(Pos.CENTER_LEFT);
-        row.getStyleClass().add("transaction-row");
-
-        // Kolom Nama (Gambar + Teks)
-        ImageView imageView = new ImageView(new Image(transaksiDummy.getImagePath()));
-        imageView.setFitHeight(30);
-        imageView.setFitWidth(30);
-        imageView.getStyleClass().add("table-image");
-        Label namaLabel = new Label(transaksiDummy.getNama());
-        HBox namaBox = new HBox(10, imageView, namaLabel);
-        namaBox.setAlignment(Pos.CENTER_LEFT);
-
-        // Kolom-kolom lain sebagai Label atau StackPane
-        Label unitLabel = new Label(transaksiDummy.getKamar());
-        unitLabel.setAlignment(Pos.CENTER);
-        Label tanggalLabel = new Label(transaksiDummy.getTanggal());
-        tanggalLabel.setAlignment(Pos.CENTER);
-        Label jumlahLabel = new Label(transaksiDummy.getJumlah());
-        jumlahLabel.setAlignment(Pos.CENTER);
-
-        HBox spacer = new HBox();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        Label statusLabel = new Label(transaksiDummy.getStatus());
-        statusLabel.getStyleClass().add("status-label");
-        statusLabel.getStyleClass().add("status-" + transaksiDummy.getStatus().toLowerCase().replace(" ", "-"));
-        StackPane statusContainer = new StackPane(statusLabel);
-        statusContainer.setAlignment(Pos.CENTER);
-
-        // --- PERUBAHAN DI SINI: Hapus setPrefWidth dan ganti dengan binding ---
-        namaBox.prefWidthProperty().bind(row.widthProperty().multiply(0.30));
-        unitLabel.prefWidthProperty().bind(row.widthProperty().multiply(0.15));
-        tanggalLabel.prefWidthProperty().bind(row.widthProperty().multiply(0.20));
-        jumlahLabel.prefWidthProperty().bind(row.widthProperty().multiply(0.20));
-        statusContainer.prefWidthProperty().bind(row.widthProperty().multiply(0.15));
-
-        row.getChildren().addAll(namaBox, unitLabel, tanggalLabel, jumlahLabel, spacer, statusContainer);
-        return row;
-    }
-
-    /**
-     * Membuat header kustom untuk daftar transaksi.
-     */
-    // Di dalam kelas AdminDashboardView
-    private Node createTransaksiHeader() {
-        HBox header = new HBox(10);
+    private Node createKosHeaderRow() {
+        HBox header = new HBox();
         header.setPadding(new Insets(10, 15, 10, 15));
-        header.getStyleClass().add("transaction-header");
+        header.getStyleClass().add("kos-table-header");
 
-        // --- Kolom Name ---
-        ImageView nameIcon = new ImageView(new Image("/img/list-icon.png"));
-        nameIcon.setFitHeight(16);
-        nameIcon.setFitWidth(16);
-        HBox nameContent = new HBox(5, nameIcon, new Label("Nama"));
-        nameContent.setAlignment(Pos.CENTER);
-        StackPane namaPane = new StackPane(nameContent);
-        namaPane.setAlignment(Pos.CENTER);
+        Label no = new Label("No");
+        no.setPrefWidth(70);
+        Label nama = new Label("Nama");
+        nama.setPrefWidth(250);
+        Label alamat = new Label("Alamat");
+        alamat.setPrefWidth(350);
+        Label harga = new Label("Harga");
+        harga.setPrefWidth(255);
+        Label aksi = new Label("Aksi");
+        aksi.setPrefWidth(100);
 
-        // --- Kolom Unit ---
-        ImageView unitIcon = new ImageView(new Image("/img/property-icon.png"));
-        unitIcon.setFitHeight(16);
-        unitIcon.setFitWidth(16);
-        HBox unitContent = new HBox(5, unitIcon, new Label("Unit"));
-        unitContent.setAlignment(Pos.CENTER);
-        StackPane unitPane = new StackPane(unitContent);
-        unitPane.setAlignment(Pos.CENTER);
+        HBox.setHgrow(alamat, Priority.ALWAYS);
 
-        // --- Kolom Date ---
-        ImageView dateIcon = new ImageView(new Image("/img/calendar-icon.png"));
-        dateIcon.setFitHeight(16);
-        dateIcon.setFitWidth(16);
-        HBox dateContent = new HBox(5, dateIcon, new Label("Tanggal"));
-        dateContent.setAlignment(Pos.CENTER);
-        StackPane tanggalPane = new StackPane(dateContent);
-        tanggalPane.setAlignment(Pos.CENTER);
-
-        // --- Kolom Amount ---
-        ImageView amountIcon = new ImageView(new Image("/img/order-icon.png"));
-        amountIcon.setFitHeight(16);
-        amountIcon.setFitWidth(16);
-        HBox amountContent = new HBox(5, amountIcon, new Label("Harga"));
-        amountContent.setAlignment(Pos.CENTER);
-        StackPane jumlahPane = new StackPane(amountContent);
-        jumlahPane.setAlignment(Pos.CENTER);
-
-        HBox spacer = new HBox();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        // --- Kolom Status ---
-        ImageView statusIcon = new ImageView(new Image("/img/status-icon.png"));
-        statusIcon.setFitHeight(16);
-        statusIcon.setFitWidth(16);
-        HBox statusContent = new HBox(5, statusIcon, new Label("Status"));
-        statusContent.setAlignment(Pos.CENTER);
-        StackPane statusPane = new StackPane(statusContent);
-        statusPane.setAlignment(Pos.CENTER);
-
-        // Atur lebar proporsional untuk setiap StackPane
-        namaPane.prefWidthProperty().bind(header.widthProperty().multiply(0.30));
-        unitPane.prefWidthProperty().bind(header.widthProperty().multiply(0.15));
-        tanggalPane.prefWidthProperty().bind(header.widthProperty().multiply(0.20));
-        jumlahPane.prefWidthProperty().bind(header.widthProperty().multiply(0.20));
-        statusPane.prefWidthProperty().bind(header.widthProperty().multiply(0.15));
-
-        header.getChildren().addAll(namaPane, unitPane, tanggalPane, jumlahPane, spacer, statusPane);
+        header.getChildren().addAll(no, nama, alamat, harga, aksi);
         return header;
     }
 
-    private Node createRightSidebar(DataService dataService) {
-        // VBox utama untuk menampung panel di sisi kanan
-        VBox rightSidebarContent = new VBox(20);
+    public Node createKosDataRow(KosDummy kos, AdminDashboardController controller) {
+        HBox row = new HBox();
+        row.setPadding(new Insets(15));
+        row.setAlignment(Pos.CENTER_LEFT);
+        row.getStyleClass().add("kos-data-row");
 
-        // 1. Panggil metode helper untuk membuat panel booking
-        Node bookingPanel = createBookingPanel(dataService);
+        Label no = new Label(String.valueOf(kos.getNo()));
+        no.setPrefWidth(40);
+        Label nama = new Label(kos.getNama());
+        nama.setPrefWidth(220);
+        Label alamat = new Label(kos.getAlamat());
+        alamat.setPrefWidth(380);
+        Label harga = new Label(kos.getHarga());
+        harga.setPrefWidth(250);
 
-        // 2. Panggil metode helper untuk membuat panel aksi cepat
-        Node quickActionsPanel = createQuickActionsPanel();
-
-        // Spacer untuk mendorong panel aksi cepat ke bawah
-        VBox spacer = new VBox();
-        VBox.setVgrow(spacer, Priority.ALWAYS);
-
-        // 3. Susun semua panel di dalam VBox utama
-        rightSidebarContent.getChildren().addAll(bookingPanel, spacer, quickActionsPanel);
-
-        return rightSidebarContent;
-    }
-
-    private Node createBookingPanel(DataService dataService) {
-        VBox panel = new VBox(15);
-        Label title = new Label("Booking Perlu Persetujuan");
-        title.getStyleClass().add("panel-title");
-
-        VBox bookingCardsContainer = new VBox(10);
-        ObservableList<BookingDummy> bookings = dataService.getPendingBookings();
-        for (BookingDummy booking : bookings) {
-            bookingCardsContainer.getChildren().add(createBookingCard(booking));
-        }
-
-        ScrollPane scrollPane = new ScrollPane(bookingCardsContainer);
-        scrollPane.setFitToWidth(true);
-        scrollPane.getStyleClass().add("no-border-scroll-pane");
-
-        panel.getChildren().addAll(title, scrollPane);
-        return panel;
-    }
-
-    /**
-     * Membuat panel baru untuk tombol-tombol Aksi Cepat.
-     */
-    private Node createQuickActionsPanel() {
-        VBox panel = new VBox(15);
-        Label title = new Label("Aksi Cepat");
-        title.getStyleClass().add("panel-title");
-
-        // --- Tombol Tambah Properti ---
-        ImageView addIcon = new ImageView(new Image("/img/add-circle-icon.png"));
-        addIcon.setFitWidth(18);
-        addIcon.setFitHeight(18);
-        tambahPropertiBtn = new Button("Tambah Properti");
-        tambahPropertiBtn.setGraphic(addIcon); // Tambahkan ikon
-        tambahPropertiBtn.setGraphicTextGap(10); // Atur jarak ikon & teks
-        tambahPropertiBtn.setMaxWidth(Double.MAX_VALUE);
-        tambahPropertiBtn.getStyleClass().add("quick-action-button");
-        tambahPropertiBtn.setId("add-button");
-
-        // --- Tombol Edit Properti ---
         ImageView editIcon = new ImageView(new Image("/img/edit-icon.png"));
         editIcon.setFitWidth(18);
         editIcon.setFitHeight(18);
-        editPropertiBtn = new Button("Edit Properti");
-        editPropertiBtn.setGraphic(editIcon); // Tambahkan ikon
-        editPropertiBtn.setGraphicTextGap(10);
-        editPropertiBtn.setMaxWidth(Double.MAX_VALUE);
-        editPropertiBtn.getStyleClass().add("quick-action-button");
-        editPropertiBtn.getStyleClass().addAll("quick-action-button", "edit-button");
-        editPropertiBtn.getStyleClass().add("quick-action-button");
-        editPropertiBtn.setId("edit-button");
+        Button editBtn = new Button();
+        editBtn.setGraphic(editIcon);
+        editBtn.getStyleClass().add("action-button");
+        editBtn.setOnAction(e -> controller.handleEditKos(kos));
 
-        // --- Tombol Hapus Properti ---
-        ImageView deleteIcon = new ImageView(new Image("/img/delete-icon.png"));
+        ImageView deleteIcon = new ImageView(new Image("/img/delete-icon-red.png"));
         deleteIcon.setFitWidth(18);
         deleteIcon.setFitHeight(18);
-        hapusPropertiBtn = new Button("Hapus Properti");
-        hapusPropertiBtn.setGraphic(deleteIcon); // Tambahkan ikon
-        hapusPropertiBtn.setGraphicTextGap(10);
-        hapusPropertiBtn.setMaxWidth(Double.MAX_VALUE);
-        hapusPropertiBtn.getStyleClass().add("quick-action-button");
-        hapusPropertiBtn.getStyleClass().add("quick-action-button");
-        hapusPropertiBtn.setId("delete-button");
+        Button deleteBtn = new Button();
+        deleteBtn.setGraphic(deleteIcon);
+        deleteBtn.getStyleClass().add("action-button-delete");
+        deleteBtn.setOnAction(e -> controller.handleDeleteKos(kos));
 
-        panel.getChildren().addAll(title, tambahPropertiBtn, editPropertiBtn, hapusPropertiBtn);
-        return panel;
+        HBox aksiBox = new HBox(5, editBtn, deleteBtn);
+        aksiBox.setPrefWidth(100);
+        aksiBox.setAlignment(Pos.CENTER);
+
+        HBox.setHgrow(alamat, Priority.ALWAYS);
+
+        row.getChildren().addAll(no, nama, alamat, harga, aksiBox);
+        return row;
     }
 
-    private Node createBookingCard(BookingDummy bookingDummy) {
-        HBox card = new HBox(10);
-        card.getStyleClass().add("bookingDummy-card");
-        card.setPadding(new Insets(10));
-
-        VBox info = new VBox(2);
-        Label nama = new Label(bookingDummy.getNama());
-        nama.setStyle("-fx-font-weight: bold;");
-        Label kamar = new Label(bookingDummy.getKamar());
-        info.getChildren().addAll(nama, kamar);
-
-        HBox spacer = new HBox();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        Button approveBtn = new Button("✔");
-        approveBtn.getStyleClass().add("approve-button");
-        Button declineBtn = new Button("✖");
-        declineBtn.getStyleClass().add("decline-button");
-
-        card.getChildren().addAll(info, spacer, approveBtn, declineBtn);
-        return card;
-    }
-
-    public Button getTambahPropertiBtn() {return tambahPropertiBtn;}
-    public Button getEditPropertiBtn() {return editPropertiBtn;}
-    public Button getHapusPropertiBtn() {return hapusPropertiBtn;}
+    public VBox getRowsContainer() { return rowsContainer; }
+    public Button getCreateButton() { return searchButton; }
+    public TextField getSearchField() { return searchField; }
 }

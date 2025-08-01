@@ -1,6 +1,6 @@
 package View.Admin;
 
-import Model.TransaksiModelDummy;
+import Model.BookingModelDummy;
 import Service.KosServiceDummy;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -15,11 +15,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 
-public class TransaksiMenuView {
+public class BookingMenuView {
     private Button searchButton;
 
     public Parent getView() {
@@ -32,7 +31,7 @@ public class TransaksiMenuView {
         HBox pageHeader = new HBox();
         pageHeader.setAlignment(Pos.CENTER_LEFT);
 
-        Label title = new Label("Riwayat Transaksi");
+        Label title = new Label("Booking Kost");
         title.getStyleClass().add("welcome-title");
 
         HBox spacer = new HBox();
@@ -45,29 +44,30 @@ public class TransaksiMenuView {
         searchButton.setGraphic(searchIcon);
         searchButton.getStyleClass().add("create-button");
         TextField searchField = new TextField();
-        searchField.setPromptText("Cari Transaksi....");
+        searchField.setPromptText("Cari Bookingan....");
         searchField.getStyleClass().add("search-field");
+
 
         pageHeader.getChildren().addAll(title, spacer, searchField, searchButton);
 
-        // --- 2. Panel Tabel Transaksi ---
-        VBox transaksiTablePanel = createTransaksiTablePanel(dataService);
-        VBox.setVgrow(transaksiTablePanel, Priority.ALWAYS);
+        // --- 2. Panel Tabel Booking ---
+        VBox bookingTablePanel = createBookingTablePanel(dataService);
+        VBox.setVgrow(bookingTablePanel, Priority.ALWAYS);
 
-        mainContent.getChildren().addAll(pageHeader, transaksiTablePanel);
+        mainContent.getChildren().addAll(pageHeader, bookingTablePanel);
         return mainContent;
     }
 
-    private VBox createTransaksiTablePanel(KosServiceDummy dataService) {
+    private VBox createBookingTablePanel(KosServiceDummy dataService) {
         VBox tableWrapper = new VBox();
-        tableWrapper.getStyleClass().add("table-panel");
+        tableWrapper.getStyleClass().add("table-panel"); // Gaya panel putih
 
-        Node headerRow = createTransaksiHeaderRow();
+        Node headerRow = createBookingHeaderRow();
 
         VBox rowsContainer = new VBox();
-        ObservableList<TransaksiModelDummy> daftarTransaksi = dataService.getAllTransactions();
-        for (TransaksiModelDummy trx : daftarTransaksi) {
-            rowsContainer.getChildren().add(createTransaksiDataRow(trx));
+        ObservableList<BookingModelDummy> daftarBooking = dataService.getAllBookings();
+        for (BookingModelDummy booking : daftarBooking) {
+            rowsContainer.getChildren().add(createBookingDataRow(booking));
         }
 
         ScrollPane scrollPane = new ScrollPane(rowsContainer);
@@ -88,7 +88,7 @@ public class TransaksiMenuView {
         return tableWrapper;
     }
 
-    private Node createTransaksiHeaderRow() {
+    private Node createBookingHeaderRow() {
         HBox header = new HBox();
         header.setPadding(new Insets(12, 15, 12, 15));
         header.getStyleClass().add("kos-table-header");
@@ -101,44 +101,39 @@ public class TransaksiMenuView {
         penyewa.setPrefWidth(370);
         Label waktu = new Label("Harga");
         waktu.setPrefWidth(275);
-        Label status = new Label("Status"); // Kolom Aksi diubah menjadi Status
-        status.setPrefWidth(100);
+        Label aksi = new Label("Aksi");
+        aksi.setPrefWidth(100);
 
         HBox.setHgrow(penyewa, Priority.ALWAYS);
 
-        header.getChildren().addAll(no, namaKos, penyewa, waktu, status);
+        header.getChildren().addAll(no, namaKos, penyewa, waktu, aksi);
         return header;
     }
 
-    private Node createTransaksiDataRow(TransaksiModelDummy trx) {
+    private Node createBookingDataRow(BookingModelDummy booking) {
         HBox row = new HBox();
         row.setPadding(new Insets(15));
         row.setAlignment(Pos.CENTER_LEFT);
         row.getStyleClass().add("kos-data-row");
 
-        Label no = new Label(String.valueOf(trx.getNo()));
+        Label no = new Label(String.valueOf(booking.getNo()));
         no.setPrefWidth(40);
-        Label namaKos = new Label(trx.getNamaKos());
+        Label namaKos = new Label(booking.getNamaKos());
         namaKos.setPrefWidth(240);
-        Label penyewa = new Label(trx.getNamaPenyewa());
+        Label penyewa = new Label(booking.getNamaPenyewa());
         penyewa.setPrefWidth(400);
-        Label waktu = new Label(trx.getHargaSewa());
+        Label waktu = new Label(booking.getHargaSewa());
         waktu.setPrefWidth(270);
 
-        // --- PERUBAHAN UTAMA DI SINI ---
-        // Aksi diubah menjadi label status
-        Label statusLabel = new Label(trx.getStatus());
-        statusLabel.getStyleClass().add("status-label");
-        statusLabel.getStyleClass().add("status-" + trx.getStatus().toLowerCase());
-
-        StackPane statusContainer = new StackPane(statusLabel);
-        statusContainer.setPrefWidth(100);
-        statusContainer.setAlignment(Pos.CENTER);
-        // -----------------------------
+        Button rejectBtn = new Button("✕");
+        rejectBtn.getStyleClass().add("action-button-delete");
+        Button approveBtn = new Button("✓");
+        approveBtn.getStyleClass().add("action-button-approve");
+        HBox aksiBox = new HBox(5, rejectBtn, approveBtn);
 
         HBox.setHgrow(penyewa, Priority.ALWAYS);
 
-        row.getChildren().addAll(no, namaKos, penyewa, waktu, statusContainer);
+        row.getChildren().addAll(no, namaKos, penyewa, waktu, aksiBox);
         return row;
     }
 }

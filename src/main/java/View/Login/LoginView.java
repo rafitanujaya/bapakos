@@ -1,126 +1,111 @@
 package View.Login;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 
-// 1. HAPUS "extends Application"
 public class LoginView {
-    private VBox root;
-    private ImageView logoView;
-    private Label titleLabel;
-    private VBox formBox;
-    private Label userLabel;
+
+    private HBox root;
     private TextField userTxt;
-    private Label passLabel;
     private PasswordField passTxt;
+    private CheckBox pemilikCheckBox;
     private Button loginBtn;
-    private Label orLabel;
-    private Button registerButton;
-    private Label errorLabel;
-    private HBox roleSelectionBox;
-    private ToggleGroup roleToggleGroup;
-    private RadioButton pemilikRadio;
-    private RadioButton penyewaRadio;
+    private Label registerLabel;
 
-    // 2. BUAT CONSTRUCTOR dan pindahkan semua kode dari start() ke sini
     public LoginView() {
-        // Wadah utama dengan layout vertikal
-        root = new VBox(15);
-        root.setAlignment(Pos.CENTER);
-        root.getStyleClass().add("root");
+        // --- Panel Kiri (Gambar) ---
+        ImageView imageView = new ImageView(new Image("/img/login-pict.jpg"));
+        imageView.setFitWidth(800);
+        imageView.setFitHeight(800);
+        Rectangle clip = new Rectangle(imageView.getFitWidth(), imageView.getFitHeight());
+        clip.setArcWidth(20);
+        clip.setArcHeight(20);
+        imageView.setClip(clip);
+        VBox leftPanel = new VBox(imageView);
+        leftPanel.setAlignment(Pos.CENTER);
+        leftPanel.setPadding(new Insets(20));
 
-        // Logo
-        Image img = new Image(getClass().getResourceAsStream("/img/bapa-kos-icon-png.png"));
-        logoView = new ImageView(img);
-        logoView.setFitHeight(140);
-        logoView.setFitWidth(140);
+        // --- Panel Kanan (Form) ---
+        VBox rightPanel = new VBox(25);
+        rightPanel.setAlignment(Pos.CENTER);
 
-        // Judul
-        titleLabel = new Label("Masuk ke BapaKos");
-        titleLabel.getStyleClass().add("title-label");
+        // --- Header ---
+        ImageView logoView = new ImageView(new Image("/img/bapa-kos-icon-png.png"));
+        logoView.setFitHeight(130);
+        logoView.setFitWidth(130);
+        Label titleLabel = new Label("Welcome To BapaKos");
+        titleLabel.getStyleClass().add("login-title");
+        VBox headerBox = new VBox(10, logoView, titleLabel);
+        headerBox.setAlignment(Pos.CENTER);
 
-        // Form untuk input
-        formBox = new VBox(10);
-        formBox.setMaxWidth(300);
-        formBox.getStyleClass().add("form-box");
+        // --- Form ---
+        VBox formBox = new VBox(15);
+        formBox.setAlignment(Pos.CENTER_LEFT);
+        formBox.setMaxWidth(350);
 
-        // Komponen form
-        userLabel = new Label("Email");
+        // Field Username
+        Label userLabel = new Label("Username");
         userLabel.getStyleClass().add("input-label");
         userTxt = new TextField();
-        userTxt.setPromptText("Email");
+        userTxt.setPromptText("Username");
 
-        passLabel = new Label("Password");
+        // Field Password
+        Label passLabel = new Label("Password");
         passLabel.getStyleClass().add("input-label");
         passTxt = new PasswordField();
-        passTxt.setPromptText("Password");
+        passTxt.setPromptText("••••••••");
 
-        formBox.getChildren().addAll(userLabel, userTxt, passLabel, passTxt);
+        // Checkbox peran
+        pemilikCheckBox = new CheckBox("Property Owner");
+        pemilikCheckBox.getStyleClass().add("role-checkbox");
 
         // Tombol Login
         loginBtn = new Button("Login");
-        loginBtn.setMaxWidth(300);
-        loginBtn.getStyleClass().add("sign-in-button");
+        loginBtn.setMaxWidth(Double.MAX_VALUE);
+        loginBtn.getStyleClass().add("login-button");
 
-        // Label Error
-        errorLabel = new Label(); // Pastikan ini dibuat!
-        errorLabel.getStyleClass().add("error-label");
+        // Link Register
+        Label belumPunyaAkun = new Label("Don't have an account? ");
+        registerLabel = new Label("Register");
+        registerLabel.getStyleClass().add("register-link");
+        HBox registerBox = new HBox(belumPunyaAkun, registerLabel);
+        registerBox.setAlignment(Pos.CENTER_LEFT);
+        registerBox.getStyleClass().add("register-text-container");
 
-        // Radio Buttons
-        roleToggleGroup = new ToggleGroup();
-
-        pemilikRadio = new RadioButton("Pemilik Kos");
-        pemilikRadio.getStyleClass().add("role-radio"); // <-- Samakan class-nya
-        pemilikRadio.setToggleGroup(roleToggleGroup);
-
-        penyewaRadio = new RadioButton("Penyewa Kos");
-        penyewaRadio.getStyleClass().add("role-radio"); // <-- Samakan class-nya
-        penyewaRadio.setToggleGroup(roleToggleGroup);
-        penyewaRadio.setSelected(true);
-
-        roleSelectionBox = new HBox(25);
-        roleSelectionBox.setAlignment(Pos.CENTER);
-        roleSelectionBox.getChildren().addAll(pemilikRadio, penyewaRadio);
-
-        orLabel = new Label("atau");
-
-        registerButton = new Button("Daftar");
-        registerButton.setMaxWidth(300);
-        registerButton.getStyleClass().add("register-button");
-
-        // Susun semua komponen di root VBox
-        root.getChildren().addAll(
-                logoView, titleLabel, formBox, roleSelectionBox, loginBtn,
-                orLabel, registerButton, errorLabel
+        // Masukkan elemen ke dalam formBox
+        formBox.getChildren().addAll(
+                userLabel, userTxt,
+                passLabel, passTxt,
+                pemilikCheckBox,
+                loginBtn,
+                registerBox
         );
+
+        // Gabungkan header dan form
+        rightPanel.getChildren().addAll(headerBox, formBox);
+
+        // Gabungkan semua panel
+        root = new HBox(leftPanel, rightPanel);
+        root.getStyleClass().add("login-root");
+        leftPanel.prefWidthProperty().bind(root.widthProperty().multiply(0.6));
+        rightPanel.prefWidthProperty().bind(root.widthProperty().multiply(0.4));
     }
 
-    // 3. Hapus metode start() yang lama
-
-    // Metode Getter tetap sama, sekarang akan mengembalikan objek yang sudah dibuat
     public Parent getView() { return root; }
-    public ImageView getLogoView() { return logoView; }
-    public Label getTitleLabel() { return titleLabel; }
-    public VBox getFormBox() { return formBox; }
-    public Label getUserLabel() { return userLabel; }
     public TextField getUserTxt() { return userTxt; }
-    public Label getPassLabel() { return passLabel; }
     public PasswordField getPassTxt() { return passTxt; }
+    public CheckBox getPemilikCheckBox() { return pemilikCheckBox; }
     public Button getLoginBtn() { return loginBtn; }
-    public Label getErrorLabel() { return errorLabel; }
-    public Label getOrLabel() { return orLabel; }
-    public Button getRegisterButton() { return registerButton; }
-    public ToggleGroup getRoleToggleGroup() { return roleToggleGroup; }
-    public RadioButton getPemilikRadio() { return pemilikRadio; }
-    public RadioButton getPenyewaRadio() { return penyewaRadio; }
+    public Label getRegisterLabel() { return registerLabel; }
 }

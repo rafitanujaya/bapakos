@@ -1,17 +1,14 @@
 package View.Controller;
 
-import View.ViewManager;
 import View.Login.LoginView;
+import View.ViewManager;
 import javafx.beans.binding.Bindings;
-import javafx.scene.control.RadioButton;
 
 public class LoginController {
 
     public LoginController(LoginView view, ViewManager viewManager) {
-        // Sembunyikan label error pada awalnya
-        view.getErrorLabel().setVisible(false);
-        System.out.println("Tombol Login Ditekan!");
-        // Menonaktifkan tombol login jika field kosong (logika ini tetap berguna)
+
+        // Menonaktifkan tombol login jika field kosong
         view.getLoginBtn().disableProperty().bind(
                 Bindings.createBooleanBinding(() ->
                                 view.getUserTxt().getText().trim().isEmpty() ||
@@ -21,36 +18,23 @@ public class LoginController {
                 )
         );
 
-        // Logika untuk tombol Login yang sudah diubah
+        // Logika untuk tombol Login
         view.getLoginBtn().setOnAction(event -> {
-            // Dapatkan radio button yang dipilih
-            RadioButton selectedRoleRadio = (RadioButton) view.getRoleToggleGroup().getSelectedToggle();
-
-            // Pengaman jika tidak ada radio button yang dipilih
-            if (selectedRoleRadio == null) {
-                view.getErrorLabel().setText("Silakan pilih peran Anda!");
-                view.getErrorLabel().setVisible(true);
-                return;
-            }
-
-            String selectedRole = selectedRoleRadio.getText();
-
-            // Login sekarang selalu dianggap berhasil.
-            // Kita hanya perlu mengecek peran untuk navigasi.
-            System.out.println("Login berhasil sebagai: " + selectedRole);
-
-            if (selectedRole.equals("Pemilik Kos")) {
-                // Jika peran adalah Pemilik Kos, arahkan ke dashboard admin
+            String role;
+            // Cek apakah checkbox "Sebagai Pemilik" dicentang
+            if (view.getPemilikCheckBox().isSelected()) {
+                role = "Pemilik Kos";
                 viewManager.showAdminDashboard();
-            } else if (selectedRole.equals("Penyewa Kos")) {
-                // Jika peran adalah Penyewa Kos, arahkan ke dashboard user
+            } else {
+                role = "Penyewa Kos";
                 viewManager.showUserDashboard();
             }
+            System.out.println("Login berhasil sebagai: " + role);
         });
 
-        // Logika untuk tombol Register tetap sama
-        view.getRegisterButton().setOnAction(event -> {
-            System.out.println("Tombol register ditekan, pindah ke halaman register...");
+        // Logika untuk label "Daftar"
+        view.getRegisterLabel().setOnMouseClicked(event -> {
+            System.out.println("Label daftar diklik, pindah ke halaman register...");
             viewManager.showRegisterView();
         });
     }
