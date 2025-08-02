@@ -32,36 +32,36 @@ public class RegisterView {
     private Label errorLabel;
 
     public RegisterView() {
-        // --- Panel Kiri (Gambar) ---
+        // --- Panel Kanan (Gambar) ---
         ImageView imageView = new ImageView(new Image("/img/login-pict.jpg"));
-        imageView.setFitWidth(800);
-        imageView.setFitHeight(800);
+        imageView.setFitWidth(700);
+        imageView.setFitHeight(690);
         Rectangle clip = new Rectangle(imageView.getFitWidth(), imageView.getFitHeight());
         clip.setArcWidth(20);
         clip.setArcHeight(20);
         imageView.setClip(clip);
-        VBox leftPanel = new VBox(imageView);
-        leftPanel.setAlignment(Pos.CENTER);
-        leftPanel.setPadding(new Insets(20));
-
-        // --- Panel Kanan (Form) ---
-        VBox rightPanel = new VBox(25);
+        VBox rightPanel = new VBox(imageView);
         rightPanel.setAlignment(Pos.CENTER);
+        rightPanel.setPadding(new Insets(10));
+
+        // --- Panel Kiri (Form) ---
+        VBox leftPanel = new VBox(25);
+        leftPanel.setAlignment(Pos.CENTER);
 
         VBox formContainer = new VBox(15);
         formContainer.setAlignment(Pos.CENTER_LEFT);
-        formContainer.setMaxWidth(350);
+        formContainer.setMaxWidth(300);
 
         // Header
         ImageView logoView = new ImageView(new Image("/img/bapa-kos-icon-png.png"));
-        logoView.setFitHeight(130);
-        logoView.setFitWidth(130);
+        logoView.setFitHeight(90);
+        logoView.setFitWidth(90);
         Label titleLabel = new Label("Daftar Akun BapaKos");
         titleLabel.getStyleClass().add("login-title");
         VBox headerBox = new VBox(10, logoView, titleLabel);
         headerBox.setAlignment(Pos.CENTER);
 
-        // --- PERBAIKAN DI SINI: Inisialisasi TextField dan PasswordField ---
+        // Input Fields
         emailTxt = new TextField();
         emailTxt.setPromptText("Email");
 
@@ -70,9 +70,7 @@ public class RegisterView {
 
         confirmPassTxt = new PasswordField();
         confirmPassTxt.setPromptText("Konfirmasi Password");
-        // ---------------------------------------------------------------
 
-        // Buat label-label
         Label emailLabel = new Label("Email");
         emailLabel.getStyleClass().add("input-label");
         Label passLabel = new Label("Password");
@@ -82,7 +80,6 @@ public class RegisterView {
         Label sebagaiLabel = new Label("Daftar Sebagai");
         sebagaiLabel.getStyleClass().add("input-label");
 
-        // Radio Buttons
         roleToggleGroup = new ToggleGroup();
         pemilikRadio = new RadioButton("Pemilik Kos");
         pemilikRadio.getStyleClass().add("role-radio");
@@ -93,7 +90,6 @@ public class RegisterView {
         penyewaRadio.setSelected(true);
         HBox roleBox = new HBox(20, pemilikRadio, penyewaRadio);
 
-        // Terms and Conditions
         termsCheckBox = new CheckBox();
         Label termsLabel = new Label("Saya setuju dengan syarat dan ketentuan yang berlaku.");
         termsLabel.setWrapText(true);
@@ -103,17 +99,14 @@ public class RegisterView {
         termsBox.setCenter(termsLabel);
         BorderPane.setMargin(termsCheckBox, new Insets(0, 10, 0, 0));
 
-        // Tombol Daftar
         registerBtn = new Button("Daftar");
         registerBtn.setMaxWidth(Double.MAX_VALUE);
         registerBtn.getStyleClass().add("login-button");
 
-        // Label Error
         errorLabel = new Label();
         errorLabel.getStyleClass().add("error-label");
         errorLabel.setVisible(false);
 
-        // Link ke halaman Login
         Label sudahPunyaAkun = new Label("Sudah punya akun? ");
         sudahPunyaAkun.getStyleClass().add("sub-text");
         loginLabel = new Label("Masuk");
@@ -121,26 +114,24 @@ public class RegisterView {
         HBox loginBox = new HBox(sudahPunyaAkun, loginLabel);
         loginBox.setAlignment(Pos.CENTER_LEFT);
 
-        // Masukkan semua elemen ke formContainer
         formContainer.getChildren().addAll(
                 emailLabel, emailTxt,
                 passLabel, passTxt,
                 confirmPassLabel, confirmPassTxt,
                 sebagaiLabel, roleBox,
-                termsBox,
                 errorLabel,
+                termsBox,
                 registerBtn,
                 loginBox
         );
 
-        rightPanel.setAlignment(Pos.CENTER);
-        rightPanel.getChildren().addAll(headerBox, formContainer);
+        leftPanel.getChildren().addAll(headerBox, formContainer);
 
-        // Gabungkan Semua
-        root = new HBox(leftPanel, rightPanel);
+        // Gabungkan Semua (ubah urutan: form dulu, gambar kemudian)
+        root = new HBox(rightPanel, leftPanel);
         root.getStyleClass().add("login-root");
-        leftPanel.prefWidthProperty().bind(root.widthProperty().multiply(0.6));
-        rightPanel.prefWidthProperty().bind(root.widthProperty().multiply(0.4));
+        leftPanel.prefWidthProperty().bind(root.widthProperty().multiply(0.4));
+        rightPanel.prefWidthProperty().bind(root.widthProperty().multiply(0.6));
     }
 
     // ... (Metode Getter Anda tetap sama)

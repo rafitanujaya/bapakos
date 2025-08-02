@@ -26,33 +26,33 @@ public class LoginView {
     public LoginView() {
         // --- Panel Kiri (Gambar) ---
         ImageView imageView = new ImageView(new Image("/img/login-pict.jpg"));
-        imageView.setFitWidth(800);
-        imageView.setFitHeight(800);
+        imageView.setFitWidth(700); // 60% dari 1220
+        imageView.setFitHeight(690);
         Rectangle clip = new Rectangle(imageView.getFitWidth(), imageView.getFitHeight());
         clip.setArcWidth(20);
         clip.setArcHeight(20);
         imageView.setClip(clip);
         VBox leftPanel = new VBox(imageView);
         leftPanel.setAlignment(Pos.CENTER);
-        leftPanel.setPadding(new Insets(20));
+        leftPanel.setPadding(new Insets(10));
 
         // --- Panel Kanan (Form) ---
-        VBox rightPanel = new VBox(25);
+        VBox rightPanel = new VBox(20);
         rightPanel.setAlignment(Pos.CENTER);
 
         // --- Header ---
         ImageView logoView = new ImageView(new Image("/img/bapa-kos-icon-png.png"));
-        logoView.setFitHeight(130);
-        logoView.setFitWidth(130);
+        logoView.setFitHeight(90);
+        logoView.setFitWidth(90);
         Label titleLabel = new Label("Welcome To BapaKos");
         titleLabel.getStyleClass().add("login-title");
-        VBox headerBox = new VBox(10, logoView, titleLabel);
+        VBox headerBox = new VBox(8, logoView, titleLabel);
         headerBox.setAlignment(Pos.CENTER);
 
         // --- Form ---
-        VBox formBox = new VBox(15);
+        VBox formBox = new VBox(12);
         formBox.setAlignment(Pos.CENTER_LEFT);
-        formBox.setMaxWidth(350);
+        formBox.setMaxWidth(300);
 
         // Field Username
         Label userLabel = new Label("Username");
@@ -67,7 +67,7 @@ public class LoginView {
         passTxt.setPromptText("••••••••");
 
         // Checkbox peran
-        pemilikCheckBox = new CheckBox("Property Owner");
+        pemilikCheckBox = new CheckBox("Pemilik Kos");
         pemilikCheckBox.getStyleClass().add("role-checkbox");
 
         // Tombol Login
@@ -76,8 +76,8 @@ public class LoginView {
         loginBtn.getStyleClass().add("login-button");
 
         // Link Register
-        Label belumPunyaAkun = new Label("Don't have an account? ");
-        registerLabel = new Label("Register");
+        Label belumPunyaAkun = new Label("Tidak punya akun? ");
+        registerLabel = new Label("Daftar");
         registerLabel.getStyleClass().add("register-link");
         HBox registerBox = new HBox(belumPunyaAkun, registerLabel);
         registerBox.setAlignment(Pos.CENTER_LEFT);
@@ -98,6 +98,9 @@ public class LoginView {
         // Gabungkan semua panel
         root = new HBox(leftPanel, rightPanel);
         root.getStyleClass().add("login-root");
+        root.setPrefSize(1220, 720);
+
+        // Proporsi panel kiri 60%, kanan 40%
         leftPanel.prefWidthProperty().bind(root.widthProperty().multiply(0.6));
         rightPanel.prefWidthProperty().bind(root.widthProperty().multiply(0.4));
     }

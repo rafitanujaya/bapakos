@@ -14,7 +14,7 @@ public class KostService {
         this.kostDAO = kostDAO;
     }
 
-    public boolean create(String OwnerId, String name, String location, int price, String description) throws SQLException {
+    public boolean create(String OwnerId, String name, String location, int price, String description, byte[] image) throws SQLException {
         KostModel kost = new KostModel();
 
         kost.setId(UUID.randomUUID().toString());
@@ -23,6 +23,7 @@ public class KostService {
         kost.setLocation(location);
         kost.setPrice(price);
         kost.setDescription(description);
+        kost.setImage(image);
 
         return this.kostDAO.insert(kost);
     }

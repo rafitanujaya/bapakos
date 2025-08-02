@@ -1,11 +1,13 @@
 package View;
 
-import View.Controller.AdminPageController;
+import View.Controller.Admin.AdminPageController;
 import View.Controller.LoginController;
 import View.Controller.RegisterController;
+import View.Controller.User.UserDashboardController;
 import View.Login.LoginView;
 import View.Register.RegisterView;
 import View.User.UserDashboardView;
+import View.User.UserPageView;
 import View.Admin.AdminPageView;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -92,18 +94,19 @@ public class ViewManager {
     }
 
     public void showUserDashboard() {
-        // Terapkan pola yang sama di sini
-        if (userDashboardRoot == null) {
-            UserDashboardView userView = new UserDashboardView();
-            // new UserDashboardController(userView, this);
-            userDashboardRoot = userView.getView();
+        // 1. Tampilkan bingkai utamanya dulu (UserPageView)
+        UserPageView userPageView = new UserPageView();
+        // Anda perlu controller untuk UserPageView di sini
+        // new UserPageController(userPageView, this);
+        mainScene.setRoot(userPageView.getView());
 
-            if (userDashboardRoot instanceof Region) {
-                ((Region) userDashboardRoot).prefWidthProperty().bind(mainScene.widthProperty());
-                ((Region) userDashboardRoot).prefHeightProperty().bind(mainScene.heightProperty());
-            }
-        }
-        mainScene.setRoot(userDashboardRoot);
+        // 2. Buat konten dashboard
+        UserDashboardView dashboardView = new UserDashboardView();
+        new UserDashboardController(dashboardView);
+
+        // 3. Masukkan konten dashboard ke tengah bingkai UserPageView
+        userPageView.getRootPane().setCenter(dashboardView.getView());
+
         primaryStage.setTitle("Dashboard Penyewa Kos");
     }
 }

@@ -21,22 +21,22 @@
 
 /* Judul "Welcome to BapaKos" */
 .login-title {
-    -fx-font-size: 32px; /* Ukuran diperbesar */
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-text-fill: #212529;
 }
 
 /* Label di atas input field */
 .input-label {
-    -fx-font-size: 18px; /* Ukuran diperbesar */
+    -fx-font-size: 14px; /* Ukuran diperbesar */
     -fx-text-fill: #495057;
     -fx-font-weight: bold;
 }
 
 /* Kolom input teks */
 .text-field, .password-field {
-    -fx-font-size: 16px;
-    -fx-padding: 10px;
+    -fx-font-size: 13px;
+    -fx-padding: 8px 10px;
     -fx-background-color: white; /* <-- Latar belakang diubah menjadi putih */
     -fx-border-color: #DEE2E6;
     -fx-border-width: 1.5px; /* Border sedikit lebih tebal */
@@ -74,8 +74,8 @@
 
 /* Tombol Masuk (Login) */
 .login-button {
-    -fx-font-size: 16px; /* Ukuran diperbesar */
-    -fx-padding: 12px; /* Padding diperbesar */
+    -fx-font-size: 12px;
+    -fx-padding: 8px;
     -fx-background-color: #0D6EFD;
     -fx-text-fill: white;
     -fx-font-weight: bold;
@@ -88,7 +88,7 @@
 
 /* Teks "Daftar" yang berfungsi seperti link */
 .register-link {
-    -fx-font-size: 16px; /* Ukuran diperbesar */
+    -fx-font-size: 13px; /* Ukuran diperbesar */
     -fx-text-fill: #0D6EFD;
     -fx-font-weight: bold;
     -fx-cursor: hand;
@@ -182,14 +182,14 @@
 /* * .sidebar: Panel navigasi di kiri */
 .sidebar {
     -fx-background-color: #FFFFFF;
-    -fx-pref-width: 280px; /* Sedikit diperlebar */
+    -fx-pref-width: 200px; /* Sedikit diperlebar */
     -fx-border-color: #E9ECEF;
     -fx-border-width: 0 1px 0 0;
 }
 
 /* * .logo-text: Gaya BARU untuk teks "BapaKos" di sidebar */
 .logo-text {
-    -fx-font-size: 32px;
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-text-fill: #1E293B;
 }
@@ -197,11 +197,11 @@
 /* * .menu-button: Tombol di dalam sidebar (Dashboard, Transaksi, dll.) */
 .menu-button {
     -fx-background-color: transparent;
-    -fx-font-size: 15px;
+    -fx-font-size: 13px;
     -fx-text-fill: #495057;
     -fx-font-weight: bold;
     -fx-alignment: center-left;
-    -fx-pref-width: 240px; /* Disesuaikan dengan lebar sidebar */
+    -fx-pref-width: 180px;
     -fx-padding: 12px 15px;
     -fx-background-radius: 8px;
 }
@@ -225,10 +225,10 @@
 .logout-button-sidebar {
     -fx-background-color: #0D6EFD;
     -fx-text-fill: white;
-    -fx-font-size: 15px;
+    -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-background-radius: 8px;
-    -fx-padding: 12px;
+    -fx-padding: 10px;
     -fx-alignment: center; /* Dibuat rata tengah */
 }
 .logout-button-sidebar:hover {
@@ -250,7 +250,7 @@
 
 /* Judul besar "Selamat Datang..." */
 .welcome-title {
-    -fx-font-size: 28px;
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-text-fill: #1E293B;
 }
@@ -269,18 +269,18 @@
     -fx-background-color: transparent;
 }
 .stat-title {
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
     -fx-text-fill: #6C757D;
     -fx-font-weight: bold;
 }
 .stat-value {
-    -fx-font-size: 28px;
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-text-fill: #212529;
     -fx-padding: 5px 0;
 }
 .stat-subtext {
-    -fx-font-size: 12px;
+    -fx-font-size: 10px;
     -fx-text-fill: #6C757D;
 }
 
@@ -295,7 +295,7 @@
 
 /* Judul di dalam panel (misal: "Semua Kost Yang dimiliki") */
 .panel-title {
-    -fx-font-size: 18px;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-text-fill: #212529;
 }
@@ -306,7 +306,7 @@
     -fx-border-color: #E9ECEF;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
-    -fx-padding: 8px 12px;
+    -fx-padding: 6px 8px;
 }
 
 /* Tombol "Buat" berwarna biru */
@@ -315,7 +315,7 @@
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 8px;
-    -fx-padding: 12px 15px;
+    -fx-padding: 8px 12px;
     -fx-cursor: hand;
 }
 .create-button:hover {
@@ -339,14 +339,14 @@
     -fx-background-color: #F8F9FA;
 }
 .kos-data-row .label {
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
     -fx-font-weight: 500;
 }
 
 /* Tombol aksi (edit & hapus) di dalam baris */
 .action-button, .action-button-delete {
     -fx-background-color: transparent;
-    -fx-font-size: 18px; /* Ukuran ikon diperbesar */
+    -fx-font-size: 14px; /* Ukuran ikon diperbesar */
     -fx-cursor: hand;
 }
 .action-button:hover {
@@ -356,22 +356,58 @@
     -fx-text-fill: #d73a49; /* Merah saat hover */
 }
 
-/* Gaya untuk tombol aksi di tabel booking */
-.action-button-approve, .action-button-delete {
-    -fx-font-weight: bold;
+.empty-state-panel {
+    -fx-alignment: center;
+    -fx-padding: 40px;
+}
+.empty-state-label {
     -fx-font-size: 14px;
-    -fx-background-radius: 4px;
-    -fx-min-width: 30px;
-    -fx-min-height: 30px;
+    -fx-text-fill: #6C757D;
+}
+
+/* ==========================================================================
+   GAYA UNTUK TOMBOL AKSI (APPROVE/REJECT/EDIT/DELETE)
+   ========================================================================== */
+
+/* Gaya dasar untuk SEMUA tombol aksi kecil di dalam tabel */
+.action-button,
+.action-button-approve,
+.action-button-delete {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 6px; /* Sudut melengkung */
+    -fx-padding: 6px;
+    -fx-min-width: 32px;
+    -fx-min-height: 32px;
     -fx-cursor: hand;
 }
+
+/* --- Warna Tombol Approve --- */
 .action-button-approve {
-    -fx-background-color: #E7F5FF;
-    -fx-text-fill: #1967D2;
+    -fx-background-color: #155724; /* Latar Hijau Muda */
 }
+.action-button-approve:hover {
+    -fx-background-color: #c3e6cb;
+}
+
+/* --- Warna Tombol Reject / Delete --- */
 .action-button-delete {
-    -fx-background-color: #FDE2E1;
-    -fx-text-fill: #D93025;
+    -fx-background-color: #EA3323; /* Latar Merah Muda */
+}
+.action-button-delete:hover {
+    -fx-background-color: #f5c6cb;
+}
+
+/* --- Gaya Ikon Tombol (Edit/Delete Teks) --- */
+.action-button .text,
+.action-button-delete .text {
+    -fx-font-size: 16px;
+}
+.action-button:hover .text {
+    -fx-fill: #0D6EFD; /* Biru saat hover */
+}
+.action-button-delete:hover .text {
+    -fx-fill: #d73a49; /* Merah saat hover */
 }
 
 /* Gaya umum untuk label status "pil" */
@@ -401,6 +437,132 @@
 }
 
 /* ==========================================================================
+   GAYA UNTUK HALAMAN TAMBAH KOS
+   ========================================================================== */
+
+/* * .form-panel
+ * Gaya untuk setiap panel/kartu (General, Location).
+ * Memberi latar belakang putih, padding, dan sudut tumpul.
+ */
+.form-panel {
+    -fx-background-color: white;
+    -fx-padding: 18px;
+    -fx-background-radius: 12px;
+    -fx-border-color: #E9ECEF;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+}
+
+/* * .panel-title
+ * Judul di dalam setiap panel (General, Location).
+ */
+.panel-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #212529;
+}
+
+/* * .input-label
+ * Label di atas setiap komponen input.
+ */
+.input-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #343A40;
+}
+
+/* * .text-field, .text-area, .combo-box
+ * Gaya umum untuk semua komponen input.
+ */
+.text-field, .text-area, .combo-box {
+    -fx-font-size: 12px;
+    -fx-background-color: white;
+    -fx-border-color: #DEE2E6;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+.text-area .content {
+    -fx-background-color: white;
+}
+.combo-box .list-cell {
+    -fx-padding: 7px 10px;
+}
+
+/* Efek saat komponen input disentuh mouse (hover) */
+.text-field:hover, .text-area:hover, .combo-box:hover {
+    -fx-border-color: #ADB5BD;
+}
+
+/* Efek saat komponen input aktif/fokus */
+.text-field:focused, .text-area:focused, .combo-box:focused, .combo-box:showing {
+    -fx-border-color: #0D6EFD;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(13, 110, 253, 0.25), 5, 0, 0, 0);
+}
+
+/* * .image-drop-zone
+ * Area untuk upload gambar.
+ */
+.image-drop-zone {
+    -fx-background-color: #F8F9FA;
+    -fx-border-color: #CED4DA;
+    -fx-border-style: dashed;
+    -fx-border-width: 2px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-cursor: hand;
+}
+.image-drop-zone:hover {
+    -fx-border-color: #0D6EFD;
+}
+
+/* * .delete-image-button
+ * Tombol silang untuk menghapus gambar preview.
+ */
+.delete-image-button {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-background-radius: 50%;
+    -fx-min-width: 24px;
+    -fx-min-height: 24px;
+    -fx-padding: 0;
+}
+.delete-image-button:hover {
+    -fx-background-color: #d73a49; /* Merah */
+}
+
+/* * .create-button & .cancel-button
+ * Tombol aksi di bagian bawah form.
+ */
+.create-button {
+    -fx-background-color: #0D6EFD;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 13px;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+}
+.create-button:hover {
+    -fx-background-color: #0B5ED7;
+}
+
+.cancel-button {
+    -fx-background-color: #F1F3F5;
+    -fx-text-fill: #495057;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 13px;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+}
+.cancel-button:hover {
+    -fx-background-color: #E9ECEF;
+}
+
+/* ==========================================================================
    GAYA UNTUK HALAMAN DASHBOARD USER (PENYEWA)
    ========================================================================== */
 
@@ -408,21 +570,38 @@
 .user-dashboard-root {
     -fx-background-color: #f6f8fa;
 }
-.nav-button {
-    -fx-background-color: transparent;
-    -fx-font-size: 15px;
-    -fx-text-fill: #64748B;
-    -fx-font-weight: bold;
+
+.top-bar {
+    -fx-background-color: #FFFFFF;
+    /* Hapus border dan ganti dengan dropshadow */
+    -fx-border-width: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 15, 0, 0, 5);
 }
-.nav-button:hover {
-    -fx-text-fill: #1E2B3B;
+
+/* Gaya untuk tombol navigasi di top bar user */
+.top-bar-action-button {
+    -fx-background-color: #E9ECEF;
+    -fx-padding: 8px;
+    -fx-background-radius: 50%; /* Membuat tombol menjadi bulat sempurna */
+    -fx-cursor: hand;
 }
+.top-bar-action-button:hover {
+    -fx-background-color: #F1F3F5; /* Latar abu-abu saat hover */
+}
+
+/* Mengatur agar search field dan button menyatu */
+.search-box .text-field,
+.search-box .button {
+    -fx-border-radius: 8px; /* <-- Atur semua sudut menjadi tumpul */
+}
+
+/* Gaya umum untuk search field */
 .search-field {
     -fx-background-color: #F8F9FA;
     -fx-border-color: #E9ECEF;
     -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
     -fx-padding: 8px 12px;
-    -fx-pref-width: 250px;
 }
 .filter-sidebar {
     -fx-background-color: #FFFFFF;
@@ -433,6 +612,47 @@
     -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-text-fill: #1E293B;
+}
+
+/* --- Gaya untuk Dashboard User --- */
+/* Kontainer utama kartu */
+.kos-card-user {
+    -fx-background-color: #E9ECEF; /* Warna placeholder jika gambar gagal dimuat */
+    -fx-background-radius: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 3);
+    -fx-cursor: hand;
+}
+.kos-card-user:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 15, 0, 0, 5);
+}
+
+/* Gambar di dalam kartu, pastikan sudutnya juga tumpul */
+.kos-card-image {
+    -fx-border-radius: 12px;
+    -fx-background-radius: 20px;
+}
+
+/* Panel teks yang melayang di atas gambar */
+.kos-card-text-panel {
+    -fx-background-color: white; /* Putih semi-transparan */
+    -fx-background-radius: 12px; /* Sudut tumpul hanya di bawah */
+}
+
+/* Gaya untuk teks di dalam panel */
+.kos-card-nama {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #334155;
+}
+.kos-card-harga {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1E293B;
+}
+/* Panel detail di sebelah kanan */
+.detail-panel {
+    -fx-background-color: white;
+    -fx-background-radius: 12px;
 }
 
 /* ==========================================================================

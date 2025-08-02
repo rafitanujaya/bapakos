@@ -16,13 +16,13 @@ public class KostController {
         this.kostService = kostService;
     }
 
-    public boolean handleCreate(String name, String location, int price, String description) {
+    public boolean handleCreate(String name, String location, int price, String description, byte[] image) {
         UserModel user = Session.get();
         if (user == null || user.getRoles() == UserModel.Role.USERS) {
             return false;
         }
         try {
-            return this.kostService.create(user.getId(), name, location, price, description);
+            return this.kostService.create(user.getId(), name, location, price, description, image);
         } catch (Exception e) {
             System.out.println("Gagal Membuat Kost: " + e.getMessage());
             return false;

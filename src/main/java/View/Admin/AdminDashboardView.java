@@ -1,10 +1,9 @@
 package View.Admin;
 
-import Service.KosServiceDummy;
-import Model.KosDummy;
-import View.Controller.AdminDashboardController;
+import Model.Dummy.KosDummy;
+import Model.KostModel;
+import View.Controller.Admin.AdminDashboardController;
 import javafx.scene.shape.Rectangle;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -19,9 +18,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class AdminDashboardView {
 
     private VBox mainContent;
+    private Label welcomeLabel;
     private VBox rowsContainer;
     private Button searchButton;
     private TextField searchField;
@@ -31,7 +34,7 @@ public class AdminDashboardView {
         mainContent = new VBox(25);
         mainContent.setPadding(new Insets(30));
 
-        Label welcomeLabel = new Label("Selamat Datang Fauzi Tester");
+        welcomeLabel = new Label("memuat");
         welcomeLabel.getStyleClass().add("welcome-title");
         HBox statsCard = createStatsCard();
 
@@ -142,13 +145,13 @@ public class AdminDashboardView {
         header.getStyleClass().add("kos-table-header");
 
         Label no = new Label("No");
-        no.setPrefWidth(70);
+        no.setPrefWidth(90);
         Label nama = new Label("Nama");
-        nama.setPrefWidth(250);
+        nama.setPrefWidth(280);
         Label alamat = new Label("Alamat");
         alamat.setPrefWidth(350);
         Label harga = new Label("Harga");
-        harga.setPrefWidth(255);
+        harga.setPrefWidth(245);
         Label aksi = new Label("Aksi");
         aksi.setPrefWidth(100);
 
@@ -158,20 +161,23 @@ public class AdminDashboardView {
         return header;
     }
 
-    public Node createKosDataRow(KosDummy kos, AdminDashboardController controller) {
+    public Node createKosDataRow(int number, KostModel kos, AdminDashboardController controller) {
         HBox row = new HBox();
         row.setPadding(new Insets(15));
         row.setAlignment(Pos.CENTER_LEFT);
         row.getStyleClass().add("kos-data-row");
 
-        Label no = new Label(String.valueOf(kos.getNo()));
-        no.setPrefWidth(40);
-        Label nama = new Label(kos.getNama());
+        Label no = new Label(String.valueOf(number));
+        no.setPrefWidth(60);
+        Label nama = new Label(kos.getName()); // Diubah dari getNama()
         nama.setPrefWidth(220);
-        Label alamat = new Label(kos.getAlamat());
-        alamat.setPrefWidth(380);
-        Label harga = new Label(kos.getHarga());
-        harga.setPrefWidth(250);
+        Label alamat = new Label(kos.getLocation()); // Diubah dari getAlamat()
+        alamat.setPrefWidth(410);
+
+        // Format harga dari int menjadi Rupiah
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
+        Label harga = new Label(currencyFormat.format(kos.getPrice())); // Diubah dari getHarga()
+        harga.setPrefWidth(230);
 
         ImageView editIcon = new ImageView(new Image("/img/edit-icon.png"));
         editIcon.setFitWidth(18);
@@ -181,7 +187,7 @@ public class AdminDashboardView {
         editBtn.getStyleClass().add("action-button");
         editBtn.setOnAction(e -> controller.handleEditKos(kos));
 
-        ImageView deleteIcon = new ImageView(new Image("/img/delete-icon-red.png"));
+        ImageView deleteIcon = new ImageView(new Image("/img/delete-icon-white.png"));
         deleteIcon.setFitWidth(18);
         deleteIcon.setFitHeight(18);
         Button deleteBtn = new Button();
@@ -200,6 +206,7 @@ public class AdminDashboardView {
     }
 
     public VBox getRowsContainer() { return rowsContainer; }
-    public Button getCreateButton() { return searchButton; }
+    public Button getSearchButton() { return searchButton; }
     public TextField getSearchField() { return searchField; }
+    public Label getWelcomeLabel() { return welcomeLabel; }
 }

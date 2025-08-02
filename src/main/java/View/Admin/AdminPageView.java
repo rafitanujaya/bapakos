@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 public class AdminPageView {
 
     private final BorderPane root;
+    private Label profileNameLabel;
     private Button dashboardBtn;
     private Button transactionBtn;
     private Button orderBtn;
@@ -50,8 +51,8 @@ public class AdminPageView {
         VBox logoBox = new VBox(10);
         logoBox.setAlignment(Pos.CENTER_LEFT);
         ImageView logoIcon = new ImageView(new Image("/img/bapa-kos-icon-png.png"));
-        logoIcon.setFitHeight(110);
-        logoIcon.setFitWidth(110);
+        logoIcon.setFitHeight(90);
+        logoIcon.setFitWidth(90);
         Label logoText = new Label("BapaKos");
         logoText.getStyleClass().add("logo-text");
         logoBox.getChildren().addAll(logoIcon, logoText);
@@ -62,28 +63,30 @@ public class AdminPageView {
         dashboardBtn = createMenuButton("Dashboard", "/img/home-icon.png");
         transactionBtn = createMenuButton("Transaksi", "/img/transaction-icon.png");
         orderBtn = createMenuButton("Order", "/img/order-icon.png");
+        addKosBtn = createMenuButton("Tambah Kos", "/img/add-circle-icon.png");
 
+        VBox menuBox = new VBox(5);
         Separator separator = new Separator();
         separator.setPadding(new Insets(10, 0, 10, 0));
 
-        // Menu CRUD (Nonaktif)
-        addKosBtn = createMenuButton("Tambah Kos", "/img/add-circle-icon.png");
-        editKosBtn = createMenuButton("Ubah Kos", "/img/edit-icon.png");
-        deleteKosBtn = createMenuButton("Hapus Kos", "/img/delete-icon.png");
-
-        VBox menuBox = new VBox(5, dashboardBtn, transactionBtn, orderBtn, separator, addKosBtn, editKosBtn, deleteKosBtn);
-
+        menuBox.getChildren().addAll(
+                dashboardBtn,
+                transactionBtn,
+                orderBtn,
+                addKosBtn,
+                separator
+        );
         // --- 3. Spacer untuk mendorong profil ke bawah ---
         VBox spacer = new VBox();
         VBox.setVgrow(spacer, Priority.ALWAYS);
 
         // --- 4. Bagian Profil & Logout (pindah dari top bar) ---
         ImageView profileIcon = new ImageView(new Image("/img/profile-icon.png"));
-        profileIcon.setFitHeight(36);
-        profileIcon.setFitWidth(36);
-        Label profileName = new Label("Admin");
-        profileName.getStyleClass().add("profile-name");
-        HBox profileBox = new HBox(10, profileIcon, profileName);
+        profileIcon.setFitHeight(28);
+        profileIcon.setFitWidth(28);
+        profileNameLabel = new Label("Memuat...");
+        profileNameLabel.getStyleClass().add("profile-name");
+        HBox profileBox = new HBox(10, profileIcon, profileNameLabel);
         profileBox.setAlignment(Pos.CENTER_LEFT);
         VBox.setMargin(profileBox, new Insets(0, 0, 10, 0));
 
@@ -100,8 +103,8 @@ public class AdminPageView {
         Button button = new Button(text);
         Image icon = new Image(imagePath);
         ImageView iconView = new ImageView(icon);
-        iconView.setFitWidth(20);
-        iconView.setFitHeight(20);
+        iconView.setFitWidth(18);
+        iconView.setFitHeight(18);
         button.setGraphic(iconView);
         button.setGraphicTextGap(15);
         button.getStyleClass().add("menu-button");
@@ -115,6 +118,7 @@ public class AdminPageView {
     public BorderPane getRootPane() {return root;}
 
     // --- Getter Disesuaikan ---
+    public Label getProfileNameLabel() { return profileNameLabel; }
     public Button getDashboardBtn() { return dashboardBtn; }
     public Button getTransactionBtn() { return transactionBtn; }
     public Button getOrderBtn() { return orderBtn; }

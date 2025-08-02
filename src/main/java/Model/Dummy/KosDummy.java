@@ -1,8 +1,4 @@
-package Model;
-
-import Service.KosServiceDummy; // Ubah ke model Kos yang sesuai
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+package Model.Dummy;
 
 // Sebuah metode harus berada di dalam sebuah kelas
 public class KosDummy {

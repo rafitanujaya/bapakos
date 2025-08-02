@@ -1,8 +1,7 @@
 package View.Admin;
 
-import Model.BookingModelDummy;
-import Service.KosServiceDummy;
-import javafx.collections.ObservableList;
+import Model.Dummy.TransaksiModelDummy;
+import View.Controller.Admin.AdminBookingController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -19,56 +18,55 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 
 public class BookingMenuView {
+
+    // Deklarasikan semua komponen yang perlu diakses sebagai field
+    private VBox mainContent;
+    private VBox rowsContainer;
+    private TextField searchField;
     private Button searchButton;
 
-    public Parent getView() {
-        VBox mainContent = new VBox(20);
+    public BookingMenuView() {
+        // --- Inisialisasi semua komponen di konstruktor ---
+        mainContent = new VBox(20);
         mainContent.setPadding(new Insets(30));
 
-        KosServiceDummy dataService = new KosServiceDummy();
-
-        // --- 1. Header Halaman ---
+        // Header Halaman
         HBox pageHeader = new HBox();
         pageHeader.setAlignment(Pos.CENTER_LEFT);
-
         Label title = new Label("Booking Kost");
         title.getStyleClass().add("welcome-title");
-
         HBox spacer = new HBox();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-
+        searchField = new TextField();
+        searchField.setPromptText("Cari Bookingan....");
+        searchField.getStyleClass().add("search-field");
         ImageView searchIcon = new ImageView(new Image("/img/search-icon-white.png"));
-        searchIcon.setFitWidth(20);
-        searchIcon.setFitHeight(20);
+        searchIcon.setFitWidth(16);
+        searchIcon.setFitHeight(16);
         searchButton = new Button();
         searchButton.setGraphic(searchIcon);
         searchButton.getStyleClass().add("create-button");
-        TextField searchField = new TextField();
-        searchField.setPromptText("Cari Bookingan....");
-        searchField.getStyleClass().add("search-field");
-
-
         pageHeader.getChildren().addAll(title, spacer, searchField, searchButton);
 
-        // --- 2. Panel Tabel Booking ---
-        VBox bookingTablePanel = createBookingTablePanel(dataService);
+        // Panel Tabel (kerangka kosong)
+        VBox bookingTablePanel = createBookingTablePanel();
         VBox.setVgrow(bookingTablePanel, Priority.ALWAYS);
 
         mainContent.getChildren().addAll(pageHeader, bookingTablePanel);
+    }
+
+    public Parent getView() {
         return mainContent;
     }
 
-    private VBox createBookingTablePanel(KosServiceDummy dataService) {
+    private VBox createBookingTablePanel() {
         VBox tableWrapper = new VBox();
-        tableWrapper.getStyleClass().add("table-panel"); // Gaya panel putih
+        tableWrapper.getStyleClass().add("table-panel");
 
         Node headerRow = createBookingHeaderRow();
 
-        VBox rowsContainer = new VBox();
-        ObservableList<BookingModelDummy> daftarBooking = dataService.getAllBookings();
-        for (BookingModelDummy booking : daftarBooking) {
-            rowsContainer.getChildren().add(createBookingDataRow(booking));
-        }
+        // Inisialisasi field rowsContainer di sini
+        rowsContainer = new VBox();
 
         ScrollPane scrollPane = new ScrollPane(rowsContainer);
         scrollPane.setFitToWidth(true);
@@ -86,6 +84,45 @@ public class BookingMenuView {
         tableWrapper.setClip(clip);
 
         return tableWrapper;
+    }
+
+    // Metode ini sekarang menerima controller sebagai parameter
+    public Node createBookingDataRow(TransaksiModelDummy booking, AdminBookingController controller) {
+        HBox row = new HBox();
+        row.setPadding(new Insets(15));
+        row.setAlignment(Pos.CENTER_LEFT);
+        row.getStyleClass().add("kos-data-row");
+
+        Label no = new Label(String.valueOf(booking.getNo()));
+        no.setPrefWidth(40);
+        Label namaKos = new Label(booking.getNamaKos());
+        namaKos.setPrefWidth(220);
+        Label penyewa = new Label(booking.getNamaPenyewa());
+        penyewa.setPrefWidth(380);
+        Label waktu = new Label(booking.getHargaSewa());
+        waktu.setPrefWidth(250);
+
+        ImageView rejectIcon = new ImageView(new Image("/img/reject-icon-white.png"));
+        rejectIcon.setFitWidth(18);
+        rejectIcon.setFitHeight(18);
+        Button rejectBtn = new Button();
+        rejectBtn.setGraphic(rejectIcon);
+        rejectBtn.getStyleClass().add("action-button-delete");
+        rejectBtn.setOnAction(e -> controller.handleReject(booking));
+
+        ImageView approveIcon = new ImageView(new Image("/img/approve-icon-white.png"));
+        approveIcon.setFitWidth(18);
+        approveIcon.setFitHeight(18);
+        Button approveBtn = new Button();
+        approveBtn.setGraphic(approveIcon);
+        approveBtn.getStyleClass().add("action-button-approve");
+        approveBtn.setOnAction(e -> controller.handleApprove(booking));
+
+        HBox aksiBox = new HBox(5, rejectBtn, approveBtn);
+        HBox.setHgrow(penyewa, Priority.ALWAYS);
+        row.getChildren().addAll(no, namaKos, penyewa, waktu, aksiBox);
+
+        return row;
     }
 
     private Node createBookingHeaderRow() {
@@ -110,30 +147,8 @@ public class BookingMenuView {
         return header;
     }
 
-    private Node createBookingDataRow(BookingModelDummy booking) {
-        HBox row = new HBox();
-        row.setPadding(new Insets(15));
-        row.setAlignment(Pos.CENTER_LEFT);
-        row.getStyleClass().add("kos-data-row");
-
-        Label no = new Label(String.valueOf(booking.getNo()));
-        no.setPrefWidth(40);
-        Label namaKos = new Label(booking.getNamaKos());
-        namaKos.setPrefWidth(240);
-        Label penyewa = new Label(booking.getNamaPenyewa());
-        penyewa.setPrefWidth(400);
-        Label waktu = new Label(booking.getHargaSewa());
-        waktu.setPrefWidth(270);
-
-        Button rejectBtn = new Button("✕");
-        rejectBtn.getStyleClass().add("action-button-delete");
-        Button approveBtn = new Button("✓");
-        approveBtn.getStyleClass().add("action-button-approve");
-        HBox aksiBox = new HBox(5, rejectBtn, approveBtn);
-
-        HBox.setHgrow(penyewa, Priority.ALWAYS);
-
-        row.getChildren().addAll(no, namaKos, penyewa, waktu, aksiBox);
-        return row;
-    }
+    // Getter untuk diakses Controller
+    public VBox getRowsContainer() { return rowsContainer; }
+    public TextField getSearchField() { return searchField; }
+    public Button getSearchButton() { return searchButton; }
 }

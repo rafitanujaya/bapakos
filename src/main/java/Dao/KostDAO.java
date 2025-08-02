@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class KostDAO {
     private final Connection conn;
 
@@ -18,7 +19,7 @@ public class KostDAO {
     }
 
     public boolean insert(KostModel kost) throws SQLException {
-        String query = "INSERT INTO kosts(id, owner_id, name, location, price, description) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO kosts(id, owner_id, name, location, price, description, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, kost.getId());
             ps.setString(2, kost.getOwnerId());
@@ -26,6 +27,7 @@ public class KostDAO {
             ps.setString(4, kost.getLocation());
             ps.setInt(5, kost.getPrice());
             ps.setString(6, kost.getDescription());
+            ps.setBytes(7, kost.getImage()); // ⬅ tambahkan image di sini
 
             int result = ps.executeUpdate();
             return result > 0;
@@ -46,6 +48,7 @@ public class KostDAO {
                 kost.setLocation(rs.getString("location"));
                 kost.setPrice(rs.getInt("price"));
                 kost.setDescription(rs.getString("description"));
+                kost.setImage(rs.getBytes("image"));
                 list.add(kost);
             }
             return list;
@@ -53,10 +56,10 @@ public class KostDAO {
     }
 
     public List<KostModel> findAllByOwnerId(String ownerId) throws SQLException {
-        String query = "SELECT * FROM kosts WHERE ownerId = ?";
+        String query = "SELECT * FROM kosts WHERE owner_id = ?";
         List<KostModel> kostList = new ArrayList<>();
 
-        try(PreparedStatement ps = conn.prepareStatement(query)) {
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, ownerId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -67,6 +70,7 @@ public class KostDAO {
                 kost.setLocation(rs.getString("location"));
                 kost.setPrice(rs.getInt("price"));
                 kost.setDescription(rs.getString("description"));
+                kost.setImage(rs.getBytes("image"));
                 kostList.add(kost);
             }
             return kostList;
@@ -75,9 +79,9 @@ public class KostDAO {
 
     public List<KostModel> findByOwnerIdAndKeyword(String ownerId, String keyword) throws SQLException {
         List<KostModel> kostList = new ArrayList<>();
-        String query = "SELECT * FROM kosts WHERE ownerId = ? AND name LIKE ? OR location LIKE ?";
+        String query = "SELECT * FROM kosts WHERE owner_id = ? AND (name LIKE ? OR location LIKE ?)";
 
-        try(PreparedStatement ps = conn.prepareStatement(query)) {
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
             String pattern = "%" + keyword + "%";
             ps.setString(1, ownerId);
             ps.setString(2, pattern);
@@ -91,6 +95,7 @@ public class KostDAO {
                 kost.setLocation(rs.getString("location"));
                 kost.setPrice(rs.getInt("price"));
                 kost.setDescription(rs.getString("description"));
+                kost.setImage(rs.getBytes("image"));
                 kostList.add(kost);
             }
         }
@@ -99,10 +104,11 @@ public class KostDAO {
 
     public List<KostWithOwnerDTO> findAllByKeyword(String keyword) throws SQLException {
         List<KostWithOwnerDTO> kostList = new ArrayList<>();
-        String query = "SELECT k.id, k.name, k.location, k.price, k.description, u.username AS owner_name FROM kosts k JOIN users u ON k.owner_id WHERE 1=1 AND k.name LIKE ? OR k.location LIKE ? OR u.username LIKE ?";
-        try(PreparedStatement ps = conn.prepareStatement(query)) {
+        String query = "SELECT k.id, k.owner_id, k.name, k.location, k.price, k.description, k.image, u.username AS owner_name FROM kosts k JOIN users u ON k.owner_id = u.id WHERE k.name LIKE ? OR k.location LIKE ? OR u.username LIKE ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
             String pattern = "%" + keyword + "%";
-            ps.setString(1, keyword);
+            ps.setString(1, pattern);
             ps.setString(2, pattern);
             ps.setString(3, pattern);
             ResultSet rs = ps.executeQuery();
@@ -115,6 +121,7 @@ public class KostDAO {
                 kost.setPrice(rs.getInt("price"));
                 kost.setDescription(rs.getString("description"));
                 kost.setOwnerName(rs.getString("owner_name"));
+                //kost.setImage(rs.getBytes("image")); // jika DTO-nya support image
                 kostList.add(kost);
             }
         }
@@ -122,31 +129,31 @@ public class KostDAO {
     }
 
     public boolean updateById(KostModel kost) throws SQLException {
-        String query = "UPDATE kosts SET name = ?, location = ?, price = ?, description = ? WHERE id = ? AND owner_id = ?";
-        try(PreparedStatement ps = conn.prepareStatement(query)) {
+        String query = "UPDATE kosts SET name = ?, location = ?, price = ?, description = ?, image = ? WHERE id = ? AND owner_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, kost.getName());
             ps.setString(2, kost.getLocation());
             ps.setInt(3, kost.getPrice());
             ps.setString(4, kost.getDescription());
-            ps.setString(5, kost.getId());
-            ps.setString(6, kost.getOwnerId());
+            ps.setBytes(5, kost.getImage());
+            ps.setString(6, kost.getId());
+            ps.setString(7, kost.getOwnerId());
 
             return ps.executeUpdate() > 0;
         }
     }
 
     public boolean deleteById(String id) throws SQLException {
-        String query = "DELETE FROM kosts WHERE id = ? AND owner_id = ?";
-        try(PreparedStatement ps = conn.prepareStatement(query)) {
+        String query = "DELETE FROM kosts WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, id);
-            ps.setString(2, id);
             return ps.executeUpdate() > 0;
         }
     }
 
     public KostModel findById(String id) throws SQLException {
         String query = "SELECT * FROM kosts WHERE id = ?";
-        try(PreparedStatement ps = conn.prepareStatement(query)) {
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -157,6 +164,7 @@ public class KostDAO {
                 kost.setLocation(rs.getString("location"));
                 kost.setPrice(rs.getInt("price"));
                 kost.setDescription(rs.getString("description"));
+                kost.setImage(rs.getBytes("image"));
                 return kost;
             }
             return null;

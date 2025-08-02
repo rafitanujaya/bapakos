@@ -9,6 +9,7 @@ public class KostModel {
     private String location;
     private String description;
     private int price;
+    private byte[] image;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -61,6 +62,10 @@ public class KostModel {
     public void setPrice(int price) {
         this.price = price;
     }
+
+    public byte[] getImage() { return image; }
+
+    public void setImage(byte[] image) { this.image = image; }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;

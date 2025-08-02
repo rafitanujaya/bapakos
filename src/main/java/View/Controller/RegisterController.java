@@ -1,31 +1,46 @@
 package View.Controller;
 
-import View.ViewManager;
+import Config.DBConfig;
+import Dao.UserDAO;
+import Model.UserModel;
+import Service.UserService;
 import View.Register.RegisterView;
-import javafx.beans.binding.Bindings;
+import View.ViewManager;
+import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
+import javafx.scene.control.Alert;
 import javafx.scene.control.RadioButton;
-import java.util.ArrayList;
-import java.util.List;
+import javafx.scene.control.Alert.AlertType;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class RegisterController {
 
-    private List<String> existingEmails = new ArrayList<>();
+    private final RegisterView view;
+    private final ViewManager viewManager;
+    private UserService userService;
 
     public RegisterController(RegisterView view, ViewManager viewManager) {
-        existingEmails.add("user@gmail.com");
+        this.view = view;
+        this.viewManager = viewManager;
 
-        // Pastikan error label disembunyikan pada awalnya
-        if (view.getErrorLabel() != null) {
-            view.getErrorLabel().setVisible(false);
+        try {
+            Connection connection = new DBConfig().getConnection();
+            this.userService = new UserService(new UserDAO(connection));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Error Database Kritis", "Tidak dapat terhubung ke database.");
         }
 
-        // --- Event handler baru untuk teks "Masuk" ---
-        view.getLoginLabel().setOnMouseClicked(event -> {
-            viewManager.showLoginView();
-        });
+        attachEventHandlers();
+    }
 
-        // --- Logika untuk menonaktifkan tombol register ---
+    private void attachEventHandlers() {
+        // Logika untuk link "Masuk"
+        view.getLoginLabel().setOnMouseClicked(event -> viewManager.showLoginView());
+
+        // Logika untuk menonaktifkan tombol register
         BooleanBinding isEmailEmpty = view.getEmailTxt().textProperty().isEmpty();
         BooleanBinding isPassEmpty = view.getPassTxt().textProperty().isEmpty();
         BooleanBinding isConfirmPassEmpty = view.getConfirmPassTxt().textProperty().isEmpty();
@@ -35,42 +50,73 @@ public class RegisterController {
                 isEmailEmpty.or(isPassEmpty).or(isConfirmPassEmpty).or(isTermsNotChecked)
         );
 
-        // --- Logika saat tombol "Daftar" diklik ---
-        view.getRegisterBtn().setOnAction(event -> {
-            String email = view.getEmailTxt().getText();
-            String password = view.getPassTxt().getText();
-
-            // Cek duplikasi email
-            if (existingEmails.contains(email)) {
-                showError(view, "Email ini sudah terdaftar!");
-                return;
-            }
-
-            // Cek kecocokan password
-            if (!password.equals(view.getConfirmPassTxt().getText())) {
-                showError(view, "Password dan konfirmasi tidak cocok!");
-                return;
-            }
-
-            // Ambil peran yang dipilih dari RadioButton
-            RadioButton selectedRoleRadio = (RadioButton) view.getRoleToggleGroup().getSelectedToggle();
-            if (selectedRoleRadio == null) {
-                showError(view, "Silakan pilih peran Anda!");
-                return;
-            }
-            String selectedRole = selectedRoleRadio.getText();
-
-            // Registrasi Sukses
-            System.out.println("Registrasi berhasil untuk: " + email + " sebagai " + selectedRole);
-            viewManager.showLoginView(); // Kembali ke halaman login
-        });
+        // Logika saat tombol "Daftar" diklik
+        view.getRegisterBtn().setOnAction(event -> handleRegister());
     }
 
-    // Metode helper untuk menampilkan error agar lebih rapi
-    private void showError(RegisterView view, String message) {
+    private void handleRegister() {
+        // 1. Validasi input di frontend
+        if (!view.getPassTxt().getText().equals(view.getConfirmPassTxt().getText())) {
+            showError("Password dan konfirmasi tidak cocok!");
+            return;
+        }
+
+        RadioButton selectedRoleRadio = (RadioButton) view.getRoleToggleGroup().getSelectedToggle();
+        if (selectedRoleRadio == null) {
+            showError("Silakan pilih peran Anda!");
+            return;
+        }
+
+        // 2. Siapkan data untuk dikirim ke service
+        String email = view.getEmailTxt().getText();
+        String password = view.getPassTxt().getText();
+        String roleText = selectedRoleRadio.getText();
+
+        // Konversi teks peran menjadi Enum Role
+        UserModel.Role role = "Pemilik Kos".equals(roleText) ? UserModel.Role.PENYEWA : UserModel.Role.USERS;
+
+        // 3. Panggil service untuk registrasi
+        try {
+            boolean isSuccess = userService.register(email, password, role);
+
+            if (isSuccess) {
+                showAlert(AlertType.INFORMATION, "Registrasi Berhasil", "Akun Anda telah berhasil dibuat. Silakan login.");
+                viewManager.showLoginView(); // Arahkan ke halaman login
+            } else {
+                showError("Email ini sudah terdaftar. Silakan gunakan email lain.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showError("Terjadi kesalahan pada database saat registrasi.");
+        }
+    }
+
+    // Metode helper untuk menampilkan pesan
+    private void showError(String message) {
         if (view.getErrorLabel() != null) {
             view.getErrorLabel().setText(message);
             view.getErrorLabel().setVisible(true);
         }
+    }
+
+    private void showAlert(String title, String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
+    }
+
+    // Anda juga bisa menambahkan versi lain untuk notifikasi sukses
+    private void showAlert(AlertType type, String title, String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(type);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
     }
 }

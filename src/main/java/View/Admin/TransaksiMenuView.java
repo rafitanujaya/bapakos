@@ -1,7 +1,7 @@
 package View.Admin;
 
-import Model.TransaksiModelDummy;
-import Service.KosServiceDummy;
+import Model.Dummy.TransaksiModelDummy;
+import Service.Dummy.TransaksiServiceDummy;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,55 +20,51 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 
 public class TransaksiMenuView {
+    private VBox mainContent;
+    private VBox rowsContainer;
+    private TextField searchField;
     private Button searchButton;
 
-    public Parent getView() {
-        VBox mainContent = new VBox(20);
+    public TransaksiMenuView() {
+        // --- Inisialisasi semua komponen di konstruktor ---
+        mainContent = new VBox(20);
         mainContent.setPadding(new Insets(30));
 
-        KosServiceDummy dataService = new KosServiceDummy();
-
-        // --- 1. Header Halaman ---
+        // Header Halaman
         HBox pageHeader = new HBox();
         pageHeader.setAlignment(Pos.CENTER_LEFT);
-
         Label title = new Label("Riwayat Transaksi");
         title.getStyleClass().add("welcome-title");
-
         HBox spacer = new HBox();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-
+        searchField = new TextField();
+        searchField.setPromptText("Cari Transaksi....");
+        searchField.getStyleClass().add("search-field");
         ImageView searchIcon = new ImageView(new Image("/img/search-icon-white.png"));
-        searchIcon.setFitWidth(20);
-        searchIcon.setFitHeight(20);
+        searchIcon.setFitWidth(16);
+        searchIcon.setFitHeight(16);
         searchButton = new Button();
         searchButton.setGraphic(searchIcon);
         searchButton.getStyleClass().add("create-button");
-        TextField searchField = new TextField();
-        searchField.setPromptText("Cari Transaksi....");
-        searchField.getStyleClass().add("search-field");
-
         pageHeader.getChildren().addAll(title, spacer, searchField, searchButton);
 
-        // --- 2. Panel Tabel Transaksi ---
-        VBox transaksiTablePanel = createTransaksiTablePanel(dataService);
+        // Panel Tabel (kerangka kosong)
+        VBox transaksiTablePanel = createTransaksiTablePanel();
         VBox.setVgrow(transaksiTablePanel, Priority.ALWAYS);
 
         mainContent.getChildren().addAll(pageHeader, transaksiTablePanel);
+    }
+
+    public Parent getView() {
         return mainContent;
     }
 
-    private VBox createTransaksiTablePanel(KosServiceDummy dataService) {
+    private VBox createTransaksiTablePanel() {
         VBox tableWrapper = new VBox();
         tableWrapper.getStyleClass().add("table-panel");
-
         Node headerRow = createTransaksiHeaderRow();
 
-        VBox rowsContainer = new VBox();
-        ObservableList<TransaksiModelDummy> daftarTransaksi = dataService.getAllTransactions();
-        for (TransaksiModelDummy trx : daftarTransaksi) {
-            rowsContainer.getChildren().add(createTransaksiDataRow(trx));
-        }
+        rowsContainer = new VBox();
 
         ScrollPane scrollPane = new ScrollPane(rowsContainer);
         scrollPane.setFitToWidth(true);
@@ -110,35 +106,36 @@ public class TransaksiMenuView {
         return header;
     }
 
-    private Node createTransaksiDataRow(TransaksiModelDummy trx) {
+    public Node createTransaksiDataRow(TransaksiModelDummy trx) {
         HBox row = new HBox();
         row.setPadding(new Insets(15));
         row.setAlignment(Pos.CENTER_LEFT);
         row.getStyleClass().add("kos-data-row");
 
+        // ... (kode untuk membuat label-label tetap sama) ...
         Label no = new Label(String.valueOf(trx.getNo()));
         no.setPrefWidth(40);
         Label namaKos = new Label(trx.getNamaKos());
-        namaKos.setPrefWidth(240);
+        namaKos.setPrefWidth(220);
         Label penyewa = new Label(trx.getNamaPenyewa());
-        penyewa.setPrefWidth(400);
+        penyewa.setPrefWidth(380);
         Label waktu = new Label(trx.getHargaSewa());
-        waktu.setPrefWidth(270);
+        waktu.setPrefWidth(250);
 
-        // --- PERUBAHAN UTAMA DI SINI ---
-        // Aksi diubah menjadi label status
         Label statusLabel = new Label(trx.getStatus());
         statusLabel.getStyleClass().add("status-label");
         statusLabel.getStyleClass().add("status-" + trx.getStatus().toLowerCase());
-
         StackPane statusContainer = new StackPane(statusLabel);
         statusContainer.setPrefWidth(100);
         statusContainer.setAlignment(Pos.CENTER);
-        // -----------------------------
 
         HBox.setHgrow(penyewa, Priority.ALWAYS);
-
         row.getChildren().addAll(no, namaKos, penyewa, waktu, statusContainer);
+
         return row;
     }
+
+    public VBox getRowsContainer() { return rowsContainer; }
+    public TextField getSearchField() { return searchField; }
+    public Button getSearchButton() { return searchButton; }
 }
